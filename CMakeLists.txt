@@ -4,11 +4,16 @@
 # You will most likely want to copy some of these lines into your own
 # CMakeLists.txt rather than use this one verbatim.
 cmake_minimum_required(VERSION 2.8)
-project(FourBar)
+project(simtkpf)
 
 # List your source and header files here.
-set(my_source_files Fourbar.cpp)
-#set(my_header_files myexe.h)
+set(my_source_files 
+	src/Gyroscope.cpp
+	src/Fourbar.cpp
+)
+set(my_header_files
+	include/Gyroscope.h
+)
 
 # This depends on SimbodyConfig.cmake being located somewhere predictable
 # on your machine. If you have installed it somewhere that CMake won't be
@@ -18,5 +23,10 @@ find_package(Simbody REQUIRED)
 # This is only necessary if Simbody was built using CMake older than 3.0.2.
 #include_directories(${Simbody_INCLUDE_DIR})
 
+add_library(simtkpf ${my_source_files} ${my_header_files})
+target_link_libraries(simtkpf PUBLIC ${Simbody_LIBRARIES})
+target_include_directories(simtkpf PUBLIC "${CMAKE_SOURCE_DIR}/include")
+
+
 add_executable(FourBar ${my_source_files} )#${my_header_files})
-target_link_libraries(FourBar ${Simbody_LIBRARIES})
+target_link_libraries(FourBar simtkpf)
