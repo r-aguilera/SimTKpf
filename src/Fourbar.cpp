@@ -1,7 +1,8 @@
+//#include <cstdio>		// Already included in "Simbody.h"?
+//#include <array>		// Already included in "Simbody.h"?
+//#include <algorithm>	// Maybe useful in future
 #include "Simbody.h"
-//#include <cstdio>		// This should be necessary to use fprintf?		} Included in std?
-//#include <array>		// This should be necessary to use arrays?		} Included in std?
-//#include <algorithm>	// Useful in future improvement
+#include "Gyroscope.h"
 
 // Return a integer to be used as a seed in random functions. Said integer contains the seconds elapsed since 1/1/1970. 
 int getSeed() {
@@ -214,60 +215,6 @@ double NormalProb(const double x, const double mean, const double s) {
 	return -0.5*y*y;
 }
 
-// Class representing a virtual gyroscope measuring angular velocity
-// in the first not-ground link of a four bar linkage
-
-class Gyroscope {
-public:
-	// Constructor given the multibody system, matter subsystem, reference state, 
-	// index of the bar which the gyroscope is in and gyroscope StdDev (zero if unspecified):
-
-	Gyroscope(const SimTK::MultibodySystem& system, const SimTK::SimbodyMatterSubsystem& matter,
-		SimTK::State& RefState, double GroundBarLenght, double StdDev = 0)
-		: m_system(system), m_matter(matter), rf_state(RefState), m_GroundBarLenght(GroundBarLenght), StdDev(StdDev) {}
-
-	static void setGlobalSeed(int seed)	{ gyrRNG.setSeed(seed); }
-
-	const double read() const {	// Return instrument reading
-		gyrRNG.setStdDev(StdDev);
-		return reading + gyrRNG.getValue();
-	}	
-
-	void measure(SimTK::Vec3 u) {	// Update instrument reading
-		using namespace SimTK;
-		m_system.realize(rf_state, Stage::Velocity);	// We can get now cartesian coordinates and velocities
-		
-		// Get first bar mobilized body
-		MobilizedBodyIndex index = MobilizedBodyIndex(1);
-		MobilizedBody body = m_matter.getMobilizedBody(index);
-
-		// Get positions
-		Vec3 Pos2 = body.getBodyOriginLocation(rf_state);
-		Vec3 Pos1 = Vec3(-m_GroundBarLenght, 0, 0);
-
-		// Get velocities
-		Vec3 Vel2 = body.getBodyOriginVelocity(rf_state);
-		Vec3 Vel1 = Vec3(0, 0, 0);
-
-		Vec3 r = Pos2 - Pos1;
-		Real distance = r.norm();
-		Vec3 w = -((Vel2 - Vel1) % r) / (distance * distance);
-		
-		reading = ~w * u;	// Dot product
-	}
-
-private:
-	const SimTK::SimbodyMatterSubsystem& m_matter;
-	const SimTK::MultibodySystem& m_system;
-	double m_GroundBarLenght;
-	double StdDev;
-	double reading;
-	SimTK::State& rf_state;
-	static SimTK::Random::Gaussian gyrRNG;
-};
-
-SimTK::Random::Gaussian Gyroscope::gyrRNG;	// Linker error otherwise
-
 // Update each gyroscope reading, and return their stardard deviation
 double getGyrsStdDev(std::vector <Gyroscope>& gyrs) {
 	double sum = 0;
@@ -276,7 +223,7 @@ double getGyrsStdDev(std::vector <Gyroscope>& gyrs) {
 	std::size_t size = gyrs.size();
 
 	for (std::size_t i = 0; i < size; i++) {
-		gyrs[i].measure(SimTK::Vec3(0, 0, 1));
+		gyrs[i].measure();
 		sum += gyrs[i].read();
 	}
 
@@ -388,7 +335,7 @@ int main() {
 		std::vector<Gyroscope> pargyr;									// Vector of gyroscopes used by particles
 		for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)				// Arrange gyroscope vector
 			pargyr.push_back(Gyroscope(system, matter, particles[i].updState(), BAR_LENGHTS[0], GYROSCOPE_STDDEV));
-		gyr.setGlobalSeed(getSeed());
+		Gyroscope::setGlobalSeed(getSeed());
 
 		double CPUtimestart;	// Reference to check CPU time
 		double bel;				// Advanced angular velocity (belief)
@@ -406,10 +353,10 @@ int main() {
 			particles.advanceStates(ts, SIM_TIME_STEP);		// Advance particles
 			std::cout << "\nTime advanced " << SIM_TIME_STEP << " s" << std::endl;
 
-			gyr.measure(SimTK::Vec3(0, 0, 1));					// Update reference state gyroscope reading
+			gyr.measure();					// Update reference state gyroscope reading
 			
 			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)	// Update particles gyroscopes reading
-				pargyr[i].measure(SimTK::Vec3(0, 0, 1));
+				pargyr[i].measure();
 			
 
 			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++){

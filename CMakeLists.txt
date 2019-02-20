@@ -7,11 +7,13 @@ cmake_minimum_required(VERSION 2.8)
 project(simtkpf)
 
 # List your source and header files here.
-set(my_source_files 
+set(my_source_files
+	src/Measuring_Instrument.cpp
 	src/Gyroscope.cpp
 	src/Fourbar.cpp
 )
 set(my_header_files
+	include/Measuring_Instrument.h
 	include/Gyroscope.h
 )
 
