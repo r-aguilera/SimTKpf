@@ -4,17 +4,22 @@
 # You will most likely want to copy some of these lines into your own
 # CMakeLists.txt rather than use this one verbatim.
 cmake_minimum_required(VERSION 2.8)
-project(simtkpf)
+project(SimTKpf)
 
 # List your source and header files here.
 set(my_source_files
-	src/Measuring_Instrument.cpp
-	src/Gyroscope.cpp
 	src/Fourbar.cpp
+	src/Gyroscope.cpp
+	src/Measuring_Instrument.cpp
+	src/Particle_Classes.cpp
+	src/PF_utilities.cpp
+	
 )
 set(my_header_files
-	include/Measuring_Instrument.h
 	include/Gyroscope.h
+	include/Measuring_Instrument.h
+	include/Particle_Classes.h
+	include/PF_utilities.h
 )
 
 # This depends on SimbodyConfig.cmake being located somewhere predictable
@@ -25,10 +30,9 @@ find_package(Simbody REQUIRED)
 # This is only necessary if Simbody was built using CMake older than 3.0.2.
 #include_directories(${Simbody_INCLUDE_DIR})
 
-add_library(simtkpf ${my_source_files} ${my_header_files})
-target_link_libraries(simtkpf PUBLIC ${Simbody_LIBRARIES})
-target_include_directories(simtkpf PUBLIC "${CMAKE_SOURCE_DIR}/include")
-
+add_library(SimTKpf ${my_source_files} ${my_header_files})
+target_link_libraries(SimTKpf PUBLIC ${Simbody_LIBRARIES})
+target_include_directories(SimTKpf PUBLIC "${CMAKE_SOURCE_DIR}/include")
 
 add_executable(FourBar ${my_source_files} )#${my_header_files})
-target_link_libraries(FourBar simtkpf)
+target_link_libraries(FourBar SimTKpf)
