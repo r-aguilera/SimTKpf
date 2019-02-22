@@ -18,6 +18,19 @@ inline int getSeed() {
 	return int(seconds);
 }
 
+// Return the given angle, expressed in the range [0, 2*Pi). Input/Output in radians!
+inline double to2Pi(double Angle){
+	double Output_Angle = Angle;
+	bool isInRange = false;
+
+	while(!isInRange) {
+		if		(Output_Angle < 0)				Output_Angle += 2 * SimTK::Pi;
+		else if (Output_Angle >= 2 * SimTK::Pi) Output_Angle -= 2 * SimTK::Pi;
+		else isInRange = true;
+	}
+
+	return Output_Angle;
+}
 
 int main() {
 	std::array <double, 4> BAR_LENGHTS = { // Examples: Double cranck: (2, 4, 3, 4), Crank-Rocker: (4, 2, 3, 4)
@@ -30,7 +43,7 @@ int main() {
 	const double SIMULATION_TIME = 60;
 	const double GYROSCOPE_STDDEV = 0.01;
 	const double FILTER_STDDEV = 0.02;
-	std::size_t PARTICLE_NUMBER = 200;
+	const std::size_t PARTICLE_NUMBER = 200;
 
 	/*
 	const SimTK::String WINDOW_TITLE = "Four bar linkage // Particle Filter";
@@ -113,9 +126,10 @@ int main() {
 		SimTK::TimeStepper ts(system, integ);
 		
 		Gyroscope gyr(system, matter, RefState, BAR_LENGHTS[0], GYROSCOPE_STDDEV);	// Gyroscope used by reference state
-		std::vector<Gyroscope> pargyr;									// Vector of gyroscopes used by particles
-		for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)				// Arrange gyroscope vector
-			pargyr.push_back(Gyroscope(system, matter, particles[i].updState(), BAR_LENGHTS[0], GYROSCOPE_STDDEV));
+		std::vector<Gyroscope> pargyr;												// Vector of gyroscopes used by particles
+		for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)							// Arrange gyroscope vector
+			pargyr.push_back(Gyroscope(system, matter, particles[i].updState(),
+				BAR_LENGHTS[0], GYROSCOPE_STDDEV));
 		Gyroscope::setGlobalSeed(getSeed());
 
 		double CPUtimestart;	// Reference to check CPU time
@@ -155,10 +169,10 @@ int main() {
 			printf("\nPARTICLE SUMMARY:\n");
 			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)
 				printf("\nParticle %3.d \tOmega =%9.5f\tLog(w) = %10.5f\tAngle = %7.3f",
-					i + 1, pargyr[i].read(), particles[i].getWeight(), particles[i].getState().getQ()[0]);
-
+					i + 1, pargyr[i].read(), particles[i].getWeight(), to2Pi(particles[i].getState().getQ()[0]));
+			
 			std::cout << "\n\nReference Gyroscope: " << gyr.read() << std::endl;
-			std::cout << "Reference Angle: " << RefState.getQ()[0] << std::endl;
+			std::cout << "Reference Angle: " << to2Pi(RefState.getQ()[0]) << std::endl;
 
 
 			particles.calculateESS();
