@@ -19,15 +19,10 @@ inline int getSeed() {
 }
 
 // Return the given angle, expressed in the range [0, 2*Pi). Input/Output in radians!
-inline double to2Pi(double Angle){
-	double Output_Angle = Angle;
-	bool isInRange = false;
-
-	while(!isInRange) {
-		if		(Output_Angle < 0)				Output_Angle += 2 * SimTK::Pi;
-		else if (Output_Angle >= 2 * SimTK::Pi) Output_Angle -= 2 * SimTK::Pi;
-		else isInRange = true;
-	}
+inline double to2Pi(double Angle) {
+	bool isNegative = Angle < 0;
+	double Output_Angle = fmod(Angle, 2 * SimTK::Pi);
+	if (isNegative) Output_Angle += 2 * SimTK::Pi;
 
 	return Output_Angle;
 }
