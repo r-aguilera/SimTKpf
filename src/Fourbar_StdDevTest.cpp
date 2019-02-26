@@ -3,6 +3,7 @@
 //#include <algorithm>	// Maybe useful in future
 #include <fstream>
 #include <string>
+#include <conio.h>
 #include "Simbody.h"
 #include "Gyroscope.h"
 #include "PF_utilities.h"
@@ -125,6 +126,8 @@ int main() {
 			}
 			CPUtimestart = SimTK::cpuTime();
 
+			std::cout << "Press Escape to stop test\n" << std::endl;
+
 			for (std::size_t StdDev_i = int(floor(saved_try/tries)); StdDev_i < deviations.size(); ++StdDev_i) {
 
 				FILTER_STDDEV = deviations[StdDev_i];
@@ -167,6 +170,11 @@ int main() {
 					CPUtimestart = SimTK::cpuTime();
 
 					for (double time = 0; time <= SIMULATION_TIME; time += SIM_TIME_STEP) {	// Loop to slowly advance simulation
+
+						if (_kbhit()) {
+							char key = _getch();
+							if (key == 27) return 0;
+						}
 
 						advance(RefState, ts, SIM_TIME_STEP);			// Advance reference state
 						particles.advanceStates(ts, SIM_TIME_STEP);		// Advance particles
