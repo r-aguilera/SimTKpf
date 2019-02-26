@@ -221,9 +221,10 @@ int main() {
 						++convs;
 				
 					CPUtotaltime += SimTK::cpuTime() - CPUtimestart;
-				
+					saved_try++;
+
 					File.open(savename, std::ios::out);
-					File << try_n << std::endl;
+					File << saved_try << std::endl;
 					File << convs << std::endl;
 					File << CPUtotaltime << std::endl;
 					File.close();
@@ -235,13 +236,21 @@ int main() {
 			
 				std::cout << "\n\tAchieved test in " << CPUtotaltime << " s." << std::endl;
 
-				File.open(filename, std::ios::out||std::ios::app);
+				File.open(filename, std::ios::app);
 				File << "StdDev: " << FILTER_STDDEV << "\t " << "\tTest time: " << CPUtotaltime << " s"
 					<< "\t" << convs << "/"<< tries <<" success" << std::endl;
 				File.close();
 
 				convs = 0;
+				CPUtotaltime = 0;
 				CPUtimestart = SimTK::cpuTime();
+
+				File.open(savename, std::ios::out);
+				File << saved_try << std::endl;
+				File << convs << std::endl;
+				File << CPUtotaltime << std::endl;
+				File.close();
+
 			}
 
 			// Here ends all tests
