@@ -8,7 +8,7 @@ project(SimTKpf)
 
 # List your source and header files here.
 set(my_source_files
-	src/Fourbar.cpp
+	src/Fourbar_StdDevTest.cpp
 	src/Gyroscope.cpp
 	src/Measuring_Instrument.cpp
 	src/Particle_Classes.cpp
@@ -34,5 +34,5 @@ add_library(SimTKpf ${my_source_files} ${my_header_files})
 target_link_libraries(SimTKpf PUBLIC ${Simbody_LIBRARIES})
 target_include_directories(SimTKpf PUBLIC "${CMAKE_SOURCE_DIR}/include")
 
-add_executable(FourBar ${my_source_files} )#${my_header_files})
-target_link_libraries(FourBar SimTKpf)
+add_executable(Fourbar_StdDevTest ${my_source_files} )#${my_header_files})
+target_link_libraries(Fourbar_StdDevTest SimTKpf)
