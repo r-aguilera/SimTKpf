@@ -42,14 +42,8 @@ int main() {
 	const double GYROSCOPE_STDDEV = 0.01;
 	double FILTER_STDDEV;
 	const std::size_t PARTICLE_NUMBER = 200;
-	const double SIMULATION_TIME = 0.252;		// 42 timesteps
+	const double SIMULATION_TIME = 0.252;		// ~0.25 seconds, 42 timesteps
 
-	/*
-	const SimTK::String WINDOW_TITLE = "Four bar linkage // Particle Filter";
-	const double TIME_SCALE = 1;
-	const double FRAME_RATE = 30;
-	const double VIZ_REPORT_INTERVAL = TIME_SCALE / FRAME_RATE;	// Overwrite to specific interval report	*/
-	
 	do{
 		try {
 			// Create the system.
@@ -97,7 +91,7 @@ int main() {
 			std::fstream File;
 			SimTK::String filename = "Fourbar_StdDevTest.txt";	// This file will contain results when test finishes
 			SimTK::String savename = "Savestate.txt";			// This file will contain variables data in case test get interrupted
-			std::array<double, 10> deviations = {	// FILTER_STDDEV values to test
+			std::array<double, 10> deviations = {				// FILTER_STDDEV values to test
 				0.001,	0.002,	0.005,
 				0.01,	0.02,	0.05,
 				0.1,	0.2,	0.5,
@@ -128,13 +122,13 @@ int main() {
 
 			std::cout << "Press Escape to stop test\n" << std::endl;
 
-			for (std::size_t StdDev_i = int(floor(saved_try/tries)); StdDev_i < deviations.size(); ++StdDev_i) {
+			for (std::size_t StdDev_i = static_cast<int>(floor(saved_try/tries)); StdDev_i < deviations.size(); ++StdDev_i) {
 
 				FILTER_STDDEV = deviations[StdDev_i];
 				std::cout << "Starting test with FILTER_STDDEV = " << FILTER_STDDEV << std::endl;
 
 
-				for (std::size_t try_n = fmod(saved_try, tries); try_n < tries; ++try_n) {
+				for (std::size_t try_n = static_cast<int>(fmod(saved_try, tries)); try_n < tries; ++try_n) {
 
 					// We will random assign the reference state and particle states in the next block
 					{
