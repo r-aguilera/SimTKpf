@@ -1,5 +1,6 @@
 //#include <cstdio>		// Already included in "Simbody.h"?
 //#include <array>		// Already included in "Simbody.h"?
+//#include <cmath>		// Already included in "Simbody.h"?
 //#include <algorithm>	// Maybe useful in future
 #include "Simbody.h"
 #include "Gyroscope.h"
@@ -19,7 +20,8 @@ inline int getSeed() {
 }
 
 // Return the given angle, expressed in the range [0, 2*Pi). Input/Output in radians!
-inline double to2Pi(double Angle) {
+inline double to2Pi(double Angle){
+	
 	bool isNegative = Angle < 0;
 	double Output_Angle = fmod(Angle, 2 * SimTK::Pi);
 	if (isNegative) Output_Angle += 2 * SimTK::Pi;
@@ -122,6 +124,7 @@ int main() {
 		
 		Gyroscope gyr(system, matter, RefState, BAR_LENGHTS[0], GYROSCOPE_STDDEV);	// Gyroscope used by reference state
 		std::vector<Gyroscope> pargyr;												// Vector of gyroscopes used by particles
+		pargyr.reserve(PARTICLE_NUMBER);
 		for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)							// Arrange gyroscope vector
 			pargyr.push_back(Gyroscope(system, matter, particles[i].updState(),
 				BAR_LENGHTS[0], GYROSCOPE_STDDEV));
