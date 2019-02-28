@@ -40,9 +40,9 @@ int main() {
 	const double BAR_WIDTH = 0.05;
 	const double SIM_TIME_STEP = 0.006;
 	const double GYROSCOPE_STDDEV = 0.01;
-	double FILTER_STDDEV;
-	const std::size_t PARTICLE_NUMBER = 200;
-	const double SIMULATION_TIME = 0.252;		// ~0.25 seconds, 42 timesteps
+	const double FILTER_STDDEV = 0.01;
+	std::size_t PARTICLE_NUMBER;
+	const double SIMULATION_TIME = 0.252;		// 42 timesteps
 
 	do{
 		try {
@@ -78,10 +78,9 @@ int main() {
 		
 			SimTK::Constraint::Ball(matter.Ground(), SimTK::Vec3(0), Bar3, SimTK::Vec3(0));
 				
-			// Initialize the system, reference state and particles.
+			// Initialize the system and reference state.
 			system.realizeTopology();
 			SimTK::State RefState = system.getDefaultState();	// Reference State
-			ParticleList particles(PARTICLE_NUMBER);			// Particle vector
 
 			// Create and add assembler.
 			SimTK::Assembler assembler(system);
@@ -89,22 +88,22 @@ int main() {
 
 			// Define test variables
 			std::fstream File;
-			SimTK::String filename = "Fourbar_StdDevTest.txt";	// This file will contain results when test finishes
+			SimTK::String filename = "Fourbar_PtNumberTest.txt";	// This file will contain results when test finishes
 			SimTK::String savename = "Savestate.txt";			// This file will contain variables data in case test get interrupted
-			std::array<double, 10> deviations = {				// FILTER_STDDEV values to test
-				0.001,	0.002,	0.005,
-				0.01,	0.02,	0.05,
-				0.1,	0.2,	0.5,
-				1
+			std::array<std::size_t, 10> pt_numbers = {	// PARTICLE_NUMBER values to test
+				10,		20,		50,
+				100,	200,	500,
+				1000,	2000,	5000,
+				10000
 			};
 			std::size_t tries = 100;	// Number of convergence tries in a simulation
 			int convs = 0;				// Number of convergences in a simulation
 			double CPUtimestart;		// Reference to check CPU time
-			double CPUtotaltime = 0;
+			double CPUtotaltime = 0; 
 
 			// Check if test is in progress
 			int saved_try= 0;
-
+			
 			File.open(savename, std::ios::in);
 			if (File) {
 				SimTK::String fileline;
@@ -121,11 +120,12 @@ int main() {
 			CPUtimestart = SimTK::cpuTime();
 
 			std::cout << "Press Escape to stop test\n" << std::endl;
+			for (std::size_t ptnumber_i = static_cast<int>(floor(saved_try/tries)); ptnumber_i < pt_numbers.size(); ++ptnumber_i) {
 
-			for (std::size_t StdDev_i = static_cast<int>(floor(saved_try/tries)); StdDev_i < deviations.size(); ++StdDev_i) {
-
-				FILTER_STDDEV = deviations[StdDev_i];
-				std::cout << "Starting test with FILTER_STDDEV = " << FILTER_STDDEV << std::endl;
+				PARTICLE_NUMBER = pt_numbers[ptnumber_i];
+				ParticleList particles(PARTICLE_NUMBER);			// Initialized Particle vector
+				
+				std::cout << "Starting test with PARTICLE_NUMBER = " << PARTICLE_NUMBER << std::endl;
 
 
 				for (std::size_t try_n = static_cast<int>(fmod(saved_try, tries)); try_n < tries; ++try_n) {
@@ -202,7 +202,7 @@ int main() {
 						// Here ends one iteration
 					}
 				
-					//Here ends one simulation try
+					// Here ends one simulation try
 
 					// Convergence criteria:
 					double Ref_Angle, Estimated_Angle = 0;
@@ -235,12 +235,12 @@ int main() {
 					CPUtimestart = SimTK::cpuTime();
 				}
 			
-				//Here ends one StdDev value test
+				//Here ends one Particle Number value test
 			
 				std::cout << "\n\tAchieved test in " << CPUtotaltime << " s." << std::endl;
 
 				File.open(filename, std::ios::app);
-				File << "StdDev: " << FILTER_STDDEV << "\t " << "\tTest time: " << CPUtotaltime << " s"
+				File << "PtNumber: " << PARTICLE_NUMBER << "\t " << "\tTest time: " << CPUtotaltime << " s"
 					<< "\t" << convs << "/"<< tries <<" success" << std::endl;
 				File.close();
 
