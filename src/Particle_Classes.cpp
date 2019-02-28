@@ -35,8 +35,7 @@ void ParticleDynState::setStateDefault(const SimTK::MultibodySystem& system) {
 ParticleList::ParticleList() {}
 
 ParticleList::ParticleList(std::size_t particle_number) {
-	for (std::size_t i = 0; i < particle_number; ++i)
-		particles.push_back(ParticleDynState());
+	particles.resize(particle_number);
 }
 ParticleList::ParticleList(std::vector <ParticleDynState>& ParticleVector) {
 	particles = ParticleVector;
@@ -49,10 +48,10 @@ ParticleDynState& ParticleList::updParticle(std::size_t n)			{ return particles[
 ParticleDynState& ParticleList::operator [] (std::size_t n)			{ return particles[n]; }
 
 void ParticleList::addParticle(const ParticleDynState& pt) {
-	particles.push_back(pt);
+	particles.emplace_back(pt);
 }
 void ParticleList::operator << (const ParticleDynState& pt) {
-	particles.push_back(pt);
+	particles.emplace_back(pt);
 }
 
 void ParticleList::deleteParticle() {
@@ -161,14 +160,14 @@ void ParticleList::resample() {
 	for (auto it = LinearWeights.begin(); it != LinearWeights.end() - 1; ++it, ++i) {
 		equalWeights.push_back(value*i);
 	}
-	equalWeights.push_back(1.0);
+	equalWeights.emplace_back(1.0);
 
 	// Select particles to later replacement:
 
 	i = 0, j = 0;
 	while (i < particle_number) {
 		if (equalWeights[i] <= accumLinearWs[j]) {
-			ResamplingPtcls.push_back(particles[j]);
+			ResamplingPtcls.emplace_back(particles[j]);
 			i++;
 		}
 		else

@@ -152,8 +152,9 @@ int main() {
 		
 					Gyroscope gyr(system, matter, RefState, BAR_LENGHTS[0], GYROSCOPE_STDDEV);	// Gyroscope used by reference state
 					std::vector<Gyroscope> pargyr;												// Vector of gyroscopes used by particles
+					pargyr.reserve(PARTICLE_NUMBER);
 					for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)							// Arrange gyroscope vector
-						pargyr.push_back(Gyroscope(system, matter, particles[i].updState(),
+						pargyr.emplace_back(Gyroscope(system, matter, particles[i].updState(),
 							BAR_LENGHTS[0], GYROSCOPE_STDDEV));
 					Gyroscope::setGlobalSeed(getSeed());
 
