@@ -38,7 +38,7 @@ int main() {
 	const double BAR_WIDTH = 0.05;
 	const double SIM_TIME_STEP = 0.006;
 	const double SIMULATION_TIME = 60;
-	const double GYROSCOPE_STDDEV = 0.01;
+	const double GYROSCOPE_STDDEV = 0.005;
 	const double FILTER_STDDEV = 0.02;
 	const std::size_t PARTICLE_NUMBER = 200;
 
@@ -127,7 +127,7 @@ int main() {
 		pargyr.reserve(PARTICLE_NUMBER);
 		for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)							// Arrange gyroscope vector
 			pargyr.push_back(Gyroscope(system, matter, particles[i].updState(),
-				BAR_LENGHTS[0], GYROSCOPE_STDDEV));
+				BAR_LENGHTS[0], 0));
 		Gyroscope::setGlobalSeed(getSeed());
 
 		double CPUtimestart;	// Reference to check CPU time
@@ -150,19 +150,18 @@ int main() {
 			
 			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)	// Update particles gyroscopes reading
 				pargyr[i].measure();
-			
 
-			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++){
+			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++){	// Update particles weight according to the prediction
 				bel = pargyr[i].read();
 				particles[i].updWeight() += NormalProb(bel, gyr.read(), GYROSCOPE_STDDEV);	// Update weights
 			}
-			particles.normalizeWeights();
 
-			// Add some noise post-predictions	// AFTER PREDICTION?
-			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++){
+			// Add some noise post-predictions
+			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++) {
 				particles[i].updState().updQ()[0] += noise.getValue();
 				assembler.assemble(particles[i].updState());
 			}
+			particles.normalizeWeights();
 
 			printf("\nPARTICLE SUMMARY:\n");
 			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)
