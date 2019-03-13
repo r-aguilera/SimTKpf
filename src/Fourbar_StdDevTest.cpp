@@ -174,6 +174,12 @@ int main() {
 						advance(RefState, ts, SIM_TIME_STEP);			// Advance reference state
 						particles.advanceStates(ts, SIM_TIME_STEP);		// Advance particles
 
+						// Add some noise after advancing particles states
+						for (std::size_t i = 0; i < PARTICLE_NUMBER; i++) {
+							particles[i].updState().updQ()[0] += noise.getValue();
+							assembler.assemble(particles[i].updState());
+						}
+
 						gyr.measure();					// Update reference state gyroscope reading
 
 						for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)	// Update particles gyroscopes reading
@@ -184,12 +190,6 @@ int main() {
 							particles[i].updWeight() += NormalProb(bel, gyr.read(), GYROSCOPE_STDDEV);	// Update weights
 						}
 						particles.normalizeWeights();
-
-						// Add some noise post-predictions	// AFTER PREDICTION?
-						for (std::size_t i = 0; i < PARTICLE_NUMBER; i++) {
-							particles[i].updState().updQ()[0] += noise.getValue();
-							assembler.assemble(particles[i].updState());
-						}
 
 						particles.calculateESS();
 
