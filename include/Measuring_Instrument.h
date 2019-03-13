@@ -5,7 +5,7 @@
 
 #include "Simbody.h"
 
-typedef class Measuring_Instrument {
+class Measuring_Instrument {
 public:
 	// This constructor use parameters needed for any virtual instrument
 	Measuring_Instrument(const SimTK::MultibodySystem&, const SimTK::SimbodyMatterSubsystem&,
@@ -25,6 +25,6 @@ protected:
 	SimTK::State& rf_state;
 	static SimTK::Random::Gaussian RNG;	
 
-} Meter;	// Short name
+};
 
 #endif
