@@ -32,7 +32,7 @@ inline double to2Pi(double Angle) {
 }
 
 int main() {
-	std::array <double, 4> BAR_LENGHTS = { // Examples: Double cranck: (2, 4, 3, 4), Crank-Rocker: (4, 2, 3, 4)
+	std::array <double, 4> BAR_LENGHTS = { // Examples: Double Crank: (2, 4, 3, 4), Crank-Rocker: (4, 2, 3, 4)
 		2,		// Bar1 lenght
 		4,		// Bar2 lenght
 		3,		// Bar3 lenght
@@ -58,19 +58,19 @@ int main() {
 			matter.Ground().addBodyDecoration(SimTK::Transform(SimTK::Rotation(SimTK::Pi/2, SimTK::Vec3(0 , 0, 1)), 
 				SimTK::Vec3(-BAR_LENGHTS[0] / 2, 0, 0)), SimTK::DecorativeCylinder(BAR_WIDTH, BAR_LENGHTS[0] / 2));
 
-			Body1.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(0), SimTK::Inertia(1)));
+			Body1.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(0, BAR_LENGHTS[1] / 2, 0), SimTK::Inertia(1)));
 			Body1.addDecoration(SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[1] / 2, 0)),
 				SimTK::DecorativeCylinder(BAR_WIDTH, BAR_LENGHTS[1] / 2));
 			SimTK::MobilizedBody::Pin Bar1(matter.Ground(), SimTK::Transform(SimTK::Vec3(-BAR_LENGHTS[0], 0, 0)),
 				Body1, SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[1], 0)));
 
-			Body2.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(0), SimTK::Inertia(1)));
+			Body2.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(0, BAR_LENGHTS[2] / 2, 0), SimTK::Inertia(1)));
 			Body2.addDecoration(SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[2] / 2, 0)),
 				SimTK::DecorativeCylinder(BAR_WIDTH, BAR_LENGHTS[2] / 2));
 			SimTK::MobilizedBody::Pin Bar2(Bar1, SimTK::Transform(SimTK::Vec3(0)),
 				Body2, SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[2], 0)));
 
-			Body3.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(0), SimTK::Inertia(1)));
+			Body3.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(0, BAR_LENGHTS[3] / 2, 0), SimTK::Inertia(1)));
 			Body3.addDecoration(SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[3] / 2, 0)),
 				SimTK::DecorativeCylinder(BAR_WIDTH, BAR_LENGHTS[3] / 2));
 			SimTK::MobilizedBody::Pin Bar3(Bar2, SimTK::Transform(SimTK::Vec3(0)),
