@@ -39,7 +39,7 @@ int main() {
 		4 };	// Bar4 lenght
 	const double BAR_WIDTH = 0.05;
 	const double SIM_TIME_STEP = 0.006;
-	const double GYROSCOPE_STDDEV = 0.01;
+	const double GYROSCOPE_STDDEV = 0.005;
 	double FILTER_STDDEV;
 	const std::size_t PARTICLE_NUMBER = 200;
 	const double SIMULATION_TIME = 0.252;		// ~0.25 seconds, 42 timesteps
@@ -155,7 +155,7 @@ int main() {
 					pargyr.reserve(PARTICLE_NUMBER);
 					for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)							// Arrange gyroscope vector
 						pargyr.emplace_back(Gyroscope(system, matter, particles[i].updState(),
-							BAR_LENGHTS[0], GYROSCOPE_STDDEV));
+							BAR_LENGHTS[0], 0));
 					Gyroscope::setGlobalSeed(getSeed());
 
 					double bel;				// Advanced angular velocity (belief)
@@ -179,8 +179,7 @@ int main() {
 						for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)	// Update particles gyroscopes reading
 							pargyr[i].measure();
 
-
-						for (std::size_t i = 0; i < PARTICLE_NUMBER; i++) {
+						for (std::size_t i = 0; i < PARTICLE_NUMBER; i++) {	// Update particles weight according to the prediction
 							bel = pargyr[i].read();
 							particles[i].updWeight() += NormalProb(bel, gyr.read(), GYROSCOPE_STDDEV);	// Update weights
 						}
