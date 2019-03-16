@@ -64,7 +64,7 @@ void ParticleList::deleteParticle(std::size_t first_index, std::size_t last_inde
 	particles.erase(particles.begin() + first_index, particles.begin() + last_index);
 }
 
-std::vector <ParticleDynState> ParticleList::getAllParticles() {
+std::vector <ParticleDynState>& ParticleList::getAllParticles() {
 	return particles;
 }
 
