@@ -52,7 +52,7 @@ public:
 	void deleteParticle(std::size_t); 				// Delete particle in specific position
 	void deleteParticle(std::size_t, std::size_t); 	// Delete particles between two positions
 
-	std::vector<ParticleDynState> getAllParticles();	// Return the whole particle list as a vector
+	std::vector<ParticleDynState>& getAllParticles();	// Return the whole particle list as a vector
 
 	void advanceStates(SimTK::TimeStepper& ts, const double dt);	// Evolve all particles State
 	
