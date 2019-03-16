@@ -13,13 +13,15 @@ set(my_source_files
 	src/Measuring_Instrument.cpp
 	src/Particle_Classes.cpp
 	src/PF_utilities.cpp
-	
+	src/Txt_write.cpp
 )
+
 set(my_header_files
 	include/Gyroscope.h
 	include/Measuring_Instrument.h
 	include/Particle_Classes.h
 	include/PF_utilities.h
+	include/Txt_write.h
 )
 
 # This depends on SimbodyConfig.cmake being located somewhere predictable
