@@ -5,6 +5,7 @@
 #include "Simbody.h"
 #include "Gyroscope.h"
 #include "PF_utilities.h"
+#include "Txt_write.h"
 
 // Return a integer to be used as a seed in random functions. Said integer contains the seconds elapsed since 1/1/1970. 
 inline int getSeed() {
@@ -41,6 +42,7 @@ int main() {
 	const double GYROSCOPE_STDDEV = 0.005;
 	const double FILTER_STDDEV = 0.02;
 	const std::size_t PARTICLE_NUMBER = 200;
+	const bool WRITE_IN_TXT = false;
 
 	/*
 	const SimTK::String WINDOW_TITLE = "Four bar linkage // Particle Filter";
@@ -141,6 +143,8 @@ int main() {
 
 			std::cout << "\n NEXT ITERATION...\n\nCurrent real time: " << time << " s\nCurrent CPU time: " 
 				<< SimTK::cpuTime() - CPUtimestart << " s" << std::endl;
+
+			if (WRITE_IN_TXT) Angle_write(RefState, particles);
 
 			advance(RefState, ts, SIM_TIME_STEP);			// Advance reference state
 			particles.advanceStates(ts, SIM_TIME_STEP);		// Advance particles
