@@ -7,29 +7,6 @@
 #include "PF_utilities.h"
 #include "Txt_write.h"
 
-// Return a integer to be used as a seed in random functions. Said integer contains the seconds elapsed since 1/1/1970. 
-inline int getSeed() {
-	timespec ts;
-	long long nanoseconds;
-	double seconds;
-	
-	clock_gettime(CLOCK_REALTIME, &ts);
-	nanoseconds = SimTK::timespecToNs(ts);
-	seconds = SimTK::nsToSec(nanoseconds);
-
-	return int(seconds);
-}
-
-// Return the given angle, expressed in the range [0, 2*Pi). Input/Output in radians!
-inline double to2Pi(double Angle){
-	
-	bool isNegative = Angle < 0;
-	double Output_Angle = fmod(Angle, 2 * SimTK::Pi);
-	if (isNegative) Output_Angle += 2 * SimTK::Pi;
-
-	return Output_Angle;
-}
-
 int main() {
 	std::array <double, 4> BAR_LENGHTS = { // Examples: Double Crank: (2, 4, 3, 4), Crank-Rocker: (4, 2, 3, 4)
 		2,		// Bar1 lenght
