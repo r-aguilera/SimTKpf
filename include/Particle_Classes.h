@@ -39,8 +39,8 @@ public:
 	ParticleList(std::size_t particle_number);
 	ParticleList(std::vector <ParticleDynState>& ParticleVector);
 
-	const ParticleDynState getParticle(std::size_t);	// Return a read-only particle
-	const ParticleDynState operator () (std::size_t);	// Operator equal to getParticle
+	const ParticleDynState getParticle(std::size_t) const;	// Return a read-only particle
+	const ParticleDynState operator () (std::size_t) const;	// Operator equal to getParticle
 
 	ParticleDynState& updParticle(std::size_t);			// Return a writable particle
 	ParticleDynState& operator [] (std::size_t);		// Operator equal to updParticle
@@ -52,7 +52,8 @@ public:
 	void deleteParticle(std::size_t); 				// Delete particle in specific position
 	void deleteParticle(std::size_t, std::size_t); 	// Delete particles between two positions
 
-	std::vector<ParticleDynState>& getAllParticles();	// Return the whole particle list as a vector
+	const std::vector<ParticleDynState>& getAllParticles() const;	// Return the whole particle list as a read-only vector
+	std::vector<ParticleDynState>& updAllParticles();				// Return the whole particle list as a writable vector
 
 	void advanceStates(SimTK::TimeStepper& ts, const double dt);	// Evolve all particles State
 	
@@ -62,8 +63,8 @@ public:
 	void normalizeWeights();		// Normalize particles' logarithmic weights
 	void normalizeLinearWeights();	// Make the particles' weight distribution a probability distribution function (Sum must be 1):
 
-	void calculateESS();	// Calculate the Effective Sample Size (ESS) of the particle list
-	const double getESS();	// Return the previously calculated ESS 
+	void calculateESS();			// Calculate the Effective Sample Size (ESS) of the particle list
+	const double getESS() const;	// Return the previously calculated ESS 
 
 	void resample();	// Replace particles according to their weights
 
