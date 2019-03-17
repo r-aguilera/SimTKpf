@@ -2,7 +2,7 @@
 #define _TXT_WRITE_
 
 #include "Simbody.h"
-#include "Particle_Classes.h"
+#include "PF_utilities.h"
 
 // This will write reference and particles both angle into an txt file:
 
