@@ -41,8 +41,8 @@ ParticleList::ParticleList(std::vector <ParticleDynState>& ParticleVector) {
 	particles = ParticleVector;
 }
 
-const ParticleDynState ParticleList::getParticle(std::size_t n)		{ return particles[n]; }
-const ParticleDynState ParticleList::operator () (std::size_t n)	{ return particles[n]; }
+const ParticleDynState ParticleList::getParticle(std::size_t n) const	{ return particles[n]; }
+const ParticleDynState ParticleList::operator () (std::size_t n) const	{ return particles[n]; }
 
 ParticleDynState& ParticleList::updParticle(std::size_t n)			{ return particles[n]; }
 ParticleDynState& ParticleList::operator [] (std::size_t n)			{ return particles[n]; }
@@ -64,7 +64,10 @@ void ParticleList::deleteParticle(std::size_t first_index, std::size_t last_inde
 	particles.erase(particles.begin() + first_index, particles.begin() + last_index);
 }
 
-std::vector <ParticleDynState>& ParticleList::getAllParticles() {
+const std::vector <ParticleDynState>& ParticleList::getAllParticles() const {
+	return particles;
+}
+std::vector <ParticleDynState>& ParticleList::updAllParticles() {
 	return particles;
 }
 
@@ -119,7 +122,7 @@ void ParticleList::calculateESS() {
 	else			ESS = (sumLinearWeights*sumLinearWeights) / (particles.size() * accum);	// ESS == 1 when equal weights
 }
 
-const double ParticleList::getESS() { return ESS; }
+const double ParticleList::getESS() const { return ESS; }
 
 void ParticleList::resample() {
 
