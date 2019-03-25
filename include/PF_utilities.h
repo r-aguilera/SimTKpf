@@ -11,7 +11,6 @@ void advance(SimTK::State&, SimTK::TimeStepper&, const double);
 double NormalProb(const double, const double, const double);
 
 // Return the given angle, expressed in the range [0, 2*Pi). Input/Output in radians!
-inline int getSeed();
 inline double to2Pi(double Angle) {
 
 	bool isNegative = Angle < 0;
@@ -21,17 +20,15 @@ inline double to2Pi(double Angle) {
 	return Output_Angle;
 }
 
-// Return a integer to be used as a seed in random functions. Said integer contains the seconds elapsed since 1/1/1970.
+// Return a integer to be used as a seed in random functions. Nanoseconds from last boot are turn into a integer. Updates every 0.001 ms.
 inline int getSeed() {
 	timespec ts;
 	long long nanoseconds;
-	double seconds;
 
-	clock_gettime(CLOCK_REALTIME, &ts);
+	clock_gettime(CLOCK_MONOTONIC, &ts);
 	nanoseconds = SimTK::timespecToNs(ts);
-	seconds = SimTK::nsToSec(nanoseconds);
-
-	return int(seconds);
+	
+	return static_cast<int>(nanoseconds);
 }
 
 #endif
