@@ -66,8 +66,8 @@ int main() {
 
 			// Define test variables
 			std::fstream File;
-			SimTK::String filename = "Fourbar_PtNumberTest.txt";	// This file will contain results when test finishes
-			SimTK::String savename = "Savestate.txt";			// This file will contain variables data in case test get interrupted
+			SimTK::String filename = "Fourbar_PtNumberTest.txt";			// This file will contain results when test finishes
+			SimTK::String savename = "Fourbar_PtNumberTest_Savestate.txt";	// This file will contain variables data in case test get interrupted
 			std::array<std::size_t, 10> pt_numbers = {	// PARTICLE_NUMBER values to test
 				10,		20,		50,
 				100,	200,	500,

@@ -66,9 +66,9 @@ int main() {
 
 			// Define test variables
 			std::fstream File;
-			SimTK::String filename = "Fourbar_StdDevTest.txt";	// This file will contain results when test finishes
-			SimTK::String savename = "Savestate.txt";			// This file will contain variables data in case test get interrupted
-			std::array<double, 10> deviations = {				// FILTER_STDDEV values to test
+			SimTK::String filename = "Fourbar_StdDevTest.txt";				// This file will contain results when test finishes
+			SimTK::String savename = "Fourbar_StdDevTest_Savestate.txt";	// This file will contain variables data in case test get interrupted
+			std::array<double, 10> deviations = {	// FILTER_STDDEV values to test
 				0.001,	0.002,	0.005,
 				0.01,	0.02,	0.05,
 				0.1,	0.2,	0.5,
