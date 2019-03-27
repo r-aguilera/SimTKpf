@@ -13,8 +13,8 @@ set(my_source_files
 	src/Particle_Classes.cpp
 	src/PF_utilities.cpp
 	src/Txt_write.cpp
-	
 )
+
 set(my_header_files
 	include/Gyroscope.h
 	include/Measuring_Instrument.h
@@ -35,9 +35,9 @@ add_library(SimTKpf ${my_source_files} ${my_header_files})
 target_link_libraries(SimTKpf PUBLIC ${Simbody_LIBRARIES})
 target_include_directories(SimTKpf PUBLIC "${CMAKE_SOURCE_DIR}/include")
 
-add_executable(Fourbar src/Fourbar.cpp ${my_source_files} )
+add_executable(Fourbar src/Fourbar.cpp ${my_source_files})
 target_link_libraries(Fourbar SimTKpf)
-add_executable(Fourbar_StdDevTest src/Fourbar_StdDevTest.cpp ${my_source_files} )
+add_executable(Fourbar_StdDevTest src/Fourbar_StdDevTest.cpp ${my_source_files})
 target_link_libraries(Fourbar_StdDevTest SimTKpf)
-add_executable(Fourbar_PtNumberTest src/Fourbar_PtNumberTest.cpp ${my_source_files} )
+add_executable(Fourbar_PtNumberTest src/Fourbar_PtNumberTest.cpp ${my_source_files})
 target_link_libraries(Fourbar_PtNumberTest SimTKpf)
