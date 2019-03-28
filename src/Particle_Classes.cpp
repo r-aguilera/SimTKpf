@@ -129,13 +129,13 @@ void ParticleList::resample() {
 	std::size_t i, j, particle_number = particles.size();
 	std::vector <ParticleDynState> ResamplingPtcls;
 	std::vector <double> LinearWeights, accumLinearWs, equalWeights;
-	double sumLinearWeights = 0, value, maxLogW;
+	double sumLinearWeights = 0, value = 0, maxLogW = 0;
 
-	// Sort particles and get maximum logarithmic weight:
-
-	std::sort(particles.begin(), particles.end());
-	maxLogW = particles[particle_number - 1].getWeight();
-
+	// Get maximum logarithmic weight:
+	
+	for (auto it = particles.begin(); it != particles.end(); ++it)
+		if (maxLogW < it->getWeight()) maxLogW = it->getWeight();
+	
 	// Get particles linear weights, calculate their sum and normalize them:
 
 	for (auto it = particles.begin(); it != particles.end(); ++it) {
@@ -163,7 +163,7 @@ void ParticleList::resample() {
 	for (auto it = LinearWeights.begin(); it != LinearWeights.end() - 1; ++it, ++i) {
 		equalWeights.push_back(value*i);
 	}
-	equalWeights.emplace_back(1.0);
+	equalWeights.push_back(1.0);
 
 	// Select particles to later replacement:
 
