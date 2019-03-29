@@ -76,6 +76,7 @@ int main() {
 		// Create and add assembler.
 		SimTK::Assembler assembler(system);
 		assembler.setSystemConstraintsWeight(1);
+		assembler.lockMobilizer(Bar1.getMobilizedBodyIndex());
 
 		// We will random assign the reference state and particle states in the next block
 		{
@@ -151,8 +152,7 @@ int main() {
 			
 			std::cout << "\n\nReference Gyroscope: " << gyr.read() << std::endl;
 			std::cout << "Reference Angle: " << to2Pi(RefState.getQ()[0]) << std::endl;
-
-
+			
 			particles.calculateESS();
 			printf("\n ESS = %f %%\n", particles.getESS() * 100);
 			
