@@ -152,12 +152,13 @@ int main() {
 			if (OUTPUT_IS_ENABLED) {
 				printf("\nPARTICLE SUMMARY:\n");
 				for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)
-					printf("\nParticle %3.d \tOmega =%9.5f\tLog(w) = %10.5f\tAngle = %7.3f",
-						i + 1, pargyr[i].read(), particles[i].getWeight(), to2Pi(particles[i].getState().getQ()[0]));
-
+					printf("\nParticle %3.u \tOmega =%9.5f\tLog(w) = %10.5f\tAngle = %7.3f",
+						static_cast<unsigned int>(i + 1),				static_cast<double>(pargyr[i].read()),
+						static_cast<double>(particles[i].getWeight()),	static_cast<double>(to2Pi(particles[i].getState().getQ()[0]))
+					);
 				std::cout << "\n\nReference Gyroscope: " << gyr.read() << std::endl;
 				std::cout << "Reference Angle: " << to2Pi(RefState.getQ()[0]) << std::endl;
-				printf("\n ESS = %f %%\n", particles.getESS() * 100);
+				printf("\n ESS = %f %%\n", static_cast<double>(particles.getESS() * 100));
 			}
 
 			if (particles.getESS() < 0.5) {		// Resample when < 50 % of effective particles
