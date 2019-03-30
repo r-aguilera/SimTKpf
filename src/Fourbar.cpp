@@ -19,7 +19,8 @@ int main() {
 	const double GYROSCOPE_STDDEV = 0.005;
 	const double FILTER_STDDEV = 0.02;
 	const std::size_t PARTICLE_NUMBER = 200;
-	const bool WRITE_IN_TXT = false;
+	const bool TXT_WRITING_IS_ENABLED = false;
+	const bool OUTPUT_IS_ENABLED = true;
 
 	/*
 	const SimTK::String WINDOW_TITLE = "Four bar linkage // Particle Filter";
@@ -83,18 +84,20 @@ int main() {
 			SimTK::Random::Uniform randomAngle(0, 2 * SimTK::Pi);
 			randomAngle.setSeed(getSeed());
 
-			std::cout << "Assigning and assembling Reference state...";
+			if (TXT_WRITING_IS_ENABLED) std::cout << "Assigning and assembling Reference state...";
+
 			RefState.updQ()[0] = randomAngle.getValue();
 			assembler.assemble(RefState);
 
-			std::cout << " Done.\nAssigning and assembling Particle states...";
+			if (TXT_WRITING_IS_ENABLED) std::cout << " Done.\nAssigning and assembling Particle states...";
 
 			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++) {	// Particle vector random assigment
 				particles[i].setStateDefault(system);
 				particles[i].updState().updQ()[0] = randomAngle.getValue();
 				assembler.assemble(particles[i].updState());
 			}
-			std::cout << " Done.\n" << std::endl;
+
+			if (TXT_WRITING_IS_ENABLED) std::cout << " Done.\n" << std::endl;
 		}
 		particles.setEqualWeights();
 
@@ -118,11 +121,12 @@ int main() {
 		CPUtimestart = SimTK::cpuTime();
 
 		for (double time = 0; time <= SIMULATION_TIME; time += SIM_TIME_STEP) {	// Loop to slowly advance simulation
-
-			std::cout << "\n NEXT ITERATION...\n\nCurrent real time: " << time << " s\nCurrent CPU time: " 
-				<< SimTK::cpuTime() - CPUtimestart << " s" << std::endl;
-
-			if (WRITE_IN_TXT) Angle_write(RefState, particles);
+			
+			if (OUTPUT_IS_ENABLED) {
+				std::cout << "\n NEXT ITERATION...\n\nCurrent real time: " << time << " s\nCurrent CPU time: "
+					<< SimTK::cpuTime() - CPUtimestart << " s" << std::endl;
+			}
+			if (TXT_WRITING_IS_ENABLED) Angle_write(RefState, particles);
 
 			advance(RefState, ts, SIM_TIME_STEP);			// Advance reference state
 			particles.advanceStates(ts, SIM_TIME_STEP);		// Advance particles
@@ -132,7 +136,6 @@ int main() {
 				particles[i].updState().updQ()[0] += noise.getValue();
 				assembler.assemble(particles[i].updState());
 			}
-			std::cout << "\nTime advanced " << SIM_TIME_STEP << " s" << std::endl;
 
 			gyr.measure();					// Update reference state gyroscope reading
 			
@@ -144,31 +147,35 @@ int main() {
 				particles[i].updWeight() += NormalProb(bel, gyr.read(), GYROSCOPE_STDDEV);	// Update weights
 			}
 			particles.normalizeWeights();
-
-			printf("\nPARTICLE SUMMARY:\n");
-			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)
-				printf("\nParticle %3.d \tOmega =%9.5f\tLog(w) = %10.5f\tAngle = %7.3f",
-					i + 1, pargyr[i].read(), particles[i].getWeight(), to2Pi(particles[i].getState().getQ()[0]));
-			
-			std::cout << "\n\nReference Gyroscope: " << gyr.read() << std::endl;
-			std::cout << "Reference Angle: " << to2Pi(RefState.getQ()[0]) << std::endl;
-			
 			particles.calculateESS();
-			printf("\n ESS = %f %%\n", particles.getESS() * 100);
-			
-			if (particles.getESS() < 0.5) {		// Resample when < 50 % of effective particles
-				
-				std::cout << "\nResample is necessary. Resampling... ";
-				particles.resample();
-				std::cout << "Resample done!" << std::endl;
+
+			if (OUTPUT_IS_ENABLED) {
+				printf("\nPARTICLE SUMMARY:\n");
+				for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)
+					printf("\nParticle %3.d \tOmega =%9.5f\tLog(w) = %10.5f\tAngle = %7.3f",
+						i + 1, pargyr[i].read(), particles[i].getWeight(), to2Pi(particles[i].getState().getQ()[0]));
+
+				std::cout << "\n\nReference Gyroscope: " << gyr.read() << std::endl;
+				std::cout << "Reference Angle: " << to2Pi(RefState.getQ()[0]) << std::endl;
+				printf("\n ESS = %f %%\n", particles.getESS() * 100);
 			}
-			
-			std::cout << "\nPress Enter to keep iterating" << std::endl;
+
+			if (particles.getESS() < 0.5) {		// Resample when < 50 % of effective particles
+				particles.resample();
+
+				if (OUTPUT_IS_ENABLED)	std::cout << "\nResample done!" << std::endl;
+			}
+
+			if (OUTPUT_IS_ENABLED) {
+				std::cout << "\nPress Enter to keep iterating" << std::endl;
+				getchar();
+			}
+		}
+
+		if (OUTPUT_IS_ENABLED) {
+			std::cout << "\nSIMULATION ENDED. Press Enter to close this window." << std::endl;
 			getchar();
 		}
-		std::cout << "\nSIMULATION ENDED. Press Enter to close this window." << std::endl;
-		getchar();
-		
 	}
 	catch (const std::exception& e) {
 		std::cout << "Error: " << e.what() << std::endl;
