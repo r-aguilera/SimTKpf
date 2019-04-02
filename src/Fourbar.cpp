@@ -84,12 +84,12 @@ int main() {
 			SimTK::Random::Uniform randomAngle(0, 2 * SimTK::Pi);
 			randomAngle.setSeed(getSeed());
 
-			if (TXT_WRITING_IS_ENABLED) std::cout << "Assigning and assembling Reference state...";
+			if (OUTPUT_IS_ENABLED) std::cout << "Assigning and assembling Reference state...";
 
 			RefState.updQ()[0] = randomAngle.getValue();
 			assembler.assemble(RefState);
 
-			if (TXT_WRITING_IS_ENABLED) std::cout << " Done.\nAssigning and assembling Particle states...";
+			if (OUTPUT_IS_ENABLED) std::cout << " Done.\nAssigning and assembling Particle states...";
 
 			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++) {	// Particle vector random assigment
 				particles[i].setStateDefault(system);
@@ -97,7 +97,7 @@ int main() {
 				assembler.assemble(particles[i].updState());
 			}
 
-			if (TXT_WRITING_IS_ENABLED) std::cout << " Done.\n" << std::endl;
+			if (OUTPUT_IS_ENABLED) std::cout << " Done.\n" << std::endl;
 		}
 		particles.setEqualWeights();
 
