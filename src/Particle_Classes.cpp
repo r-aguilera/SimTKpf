@@ -178,6 +178,8 @@ void ParticleList::resample() {
 	}
 
 	// Replace particles:
-
 	particles = ResamplingPtcls;
+
+	// Make all particles weights equal
+	setEqualWeights();
 }
