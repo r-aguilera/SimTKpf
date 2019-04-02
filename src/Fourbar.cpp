@@ -164,6 +164,11 @@ int main() {
 			if (particles.getESS() < 0.5) {		// Resample when < 50 % of effective particles
 				particles.resample();
 
+				for (std::size_t i = 0; i < PARTICLE_NUMBER; i++) {	// Noise added to angular velocity
+					double Rate = Bar1.getRate(particles[i].updState());
+					Bar1.setRate(particles[i].updState(), Rate + noise.getValue());
+				}
+
 				if (OUTPUT_IS_ENABLED)	std::cout << "\nResample done!" << std::endl;
 			}
 
