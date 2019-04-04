@@ -17,10 +17,11 @@ int main() {
 	const double SIM_TIME_STEP = 0.006;
 	const double SIMULATION_TIME = 60;
 	const double GYROSCOPE_STDDEV = 0.005;
-	const double FILTER_STDDEV = 0.02;
+	const double MOTION_STDDEV = 0.02;
+	const double RESAMPLE_STDDEV = 0.02;
 	const std::size_t PARTICLE_NUMBER = 200;
-	const bool TXT_WRITING_IS_ENABLED = false;
-	const bool OUTPUT_IS_ENABLED = true;
+	const bool TXT_WRITING_IS_ENABLED = true;
+	const bool OUTPUT_IS_ENABLED = false;
 
 	/*
 	const SimTK::String WINDOW_TITLE = "Four bar linkage // Particle Filter";
@@ -116,9 +117,12 @@ int main() {
 		double CPUtimestart;	// Reference to check CPU time
 		double bel;				// Advanced angular velocity (belief)
 		
-		SimTK::Random::Gaussian noise(0, FILTER_STDDEV);	// Gaussian noise for later use
-		noise.setSeed(getSeed());
-		CPUtimestart = SimTK::cpuTime();
+		SimTK::Random::Gaussian motion_noise(0, MOTION_STDDEV);		// Gaussian noise added during state advancing
+		SimTK::Random::Gaussian resample_noise(0, RESAMPLE_STDDEV);	// Gaussian noise added during resampling
+		motion_noise.setSeed(getSeed());
+		resample_noise.setSeed(getSeed());
+
+		CPUtimestart = SimTK::cpuTime();	// Taking CPU zero time reference
 
 		for (double time = 0; time <= SIMULATION_TIME; time += SIM_TIME_STEP) {	// Loop to slowly advance simulation
 			
@@ -133,7 +137,7 @@ int main() {
 
 			// Add some noise after advancing particles states
 			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++) {
-				particles[i].updState().updQ()[0] += noise.getValue();
+				particles[i].updState().updQ()[0] += motion_noise.getValue();
 				assembler.assemble(particles[i].updState());
 			}
 
@@ -166,7 +170,7 @@ int main() {
 
 				for (std::size_t i = 0; i < PARTICLE_NUMBER; i++) {	// Noise added to angular velocity
 					double Rate = Bar1.getRate(particles[i].updState());
-					Bar1.setRate(particles[i].updState(), Rate + noise.getValue());
+					Bar1.setRate(particles[i].updState(), Rate + resample_noise.getValue());
 				}
 
 				if (OUTPUT_IS_ENABLED)	std::cout << "\nResample done!" << std::endl;
