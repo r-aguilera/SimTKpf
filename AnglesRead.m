@@ -10,7 +10,7 @@ build_dir = 'build';
 path = sprintf('%s/%s/%s', build_dir, config_type, filename);
 
 % Read txt
-data = readmatrix('Angles.txt');
+data = readmatrix(path);
 
 % Get matrix sizes
 datasize = size(data);
