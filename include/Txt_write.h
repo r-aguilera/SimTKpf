@@ -3,9 +3,11 @@
 
 #include "Simbody.h"
 #include "PF_utilities.h"
+#include "Gyroscope.h"
 
 // This will write reference and particles both angle into an txt file:
 
 void Angle_write(SimTK::State&, ParticleList&);
+void Omega_write(Gyroscope&, std::vector<Gyroscope>&);
 
 #endif

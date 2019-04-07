@@ -130,7 +130,10 @@ int main() {
 				std::cout << "\n NEXT ITERATION...\n\nCurrent real time: " << time << " s\nCurrent CPU time: "
 					<< SimTK::cpuTime() - CPUtimestart << " s" << std::endl;
 			}
-			if (TXT_WRITING_IS_ENABLED) Angle_write(RefState, particles);
+			if (TXT_WRITING_IS_ENABLED) {
+				Angle_write(RefState, particles);
+				Omega_write(gyr, pargyr);
+			}
 
 			advance(RefState, ts, SIM_TIME_STEP);			// Advance reference state
 			particles.advanceStates(ts, SIM_TIME_STEP);		// Advance particles
