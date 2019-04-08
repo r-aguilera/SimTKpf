@@ -3,6 +3,9 @@
 
 #include "Simbody.h"
 #include "Particle_Classes.h"
+#include "Measuring_Instrument.h"
+#include "Simbody_Instrument.h"
+#include "Stopwatch.h"
 
 // Function to make a single State progress.
 void advance(SimTK::State&, SimTK::TimeStepper&, const double);
