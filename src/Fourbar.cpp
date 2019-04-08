@@ -3,8 +3,8 @@
 //#include <cmath>		// Already included in "Simbody.h"?
 //#include <algorithm>	// Maybe useful in future
 #include "Simbody.h"
-#include "Gyroscope.h"
 #include "PF_utilities.h"
+#include "Gyroscope.h"
 #include "Txt_write.h"
 
 int main() {
@@ -20,8 +20,8 @@ int main() {
 	const double MOTION_STDDEV = 0.02;
 	const double RESAMPLE_STDDEV = 0.02;
 	const std::size_t PARTICLE_NUMBER = 200;
-	const bool TXT_WRITING_IS_ENABLED = true;
-	const bool OUTPUT_IS_ENABLED = false;
+	const bool TXT_WRITING_IS_ENABLED = false;
+	const bool OUTPUT_IS_ENABLED = true;
 
 	/*
 	const SimTK::String WINDOW_TITLE = "Four bar linkage // Particle Filter";
@@ -114,21 +114,23 @@ int main() {
 				BAR_LENGHTS[0], 0));
 		Gyroscope::setGlobalSeed(getSeed());
 
-		double CPUtimestart;	// Reference to check CPU time
-		double bel;				// Advanced angular velocity (belief)
-		
 		SimTK::Random::Gaussian motion_noise(0, MOTION_STDDEV);		// Gaussian noise added during state advancing
 		SimTK::Random::Gaussian resample_noise(0, RESAMPLE_STDDEV);	// Gaussian noise added during resampling
 		motion_noise.setSeed(getSeed());
 		resample_noise.setSeed(getSeed());
 
-		CPUtimestart = SimTK::cpuTime();	// Taking CPU zero time reference
+		Stopwatch CPU_time(StopwatchMode::CPU_Time);	// This will count CPU time
+		double bel;				// Advanced angular velocity (belief)
+
+		CPU_time.start();
 
 		for (double time = 0; time <= SIMULATION_TIME; time += SIM_TIME_STEP) {	// Loop to slowly advance simulation
 			
 			if (OUTPUT_IS_ENABLED) {
+				CPU_time.stop();
 				std::cout << "\n NEXT ITERATION...\n\nCurrent real time: " << time << " s\nCurrent CPU time: "
-					<< SimTK::cpuTime() - CPUtimestart << " s" << std::endl;
+					<< CPU_time.read()  << " s" << std::endl;
+				CPU_time.start();
 			}
 			if (TXT_WRITING_IS_ENABLED) {
 				Angle_write(RefState, particles);

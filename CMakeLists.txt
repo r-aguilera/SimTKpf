@@ -12,6 +12,8 @@ set(my_source_files
 	src/Measuring_Instrument.cpp
 	src/Particle_Classes.cpp
 	src/PF_utilities.cpp
+	src/Simbody_Instrument.cpp
+	src/Stopwatch.cpp
 	src/Txt_write.cpp
 )
 
@@ -20,6 +22,8 @@ set(my_header_files
 	include/Measuring_Instrument.h
 	include/Particle_Classes.h
 	include/PF_utilities.h
+	include/Simbody_Instrument.h
+	include/Stopwatch.h
 	include/Txt_write.h
 )
 

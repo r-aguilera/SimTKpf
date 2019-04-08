@@ -1,9 +1,9 @@
 #include "Simbody.h"
-#include "Measuring_Instrument.h"
+#include "Simbody_Instrument.h"
 #include "Gyroscope.h"
 
 Gyroscope::Gyroscope(const SimTK::MultibodySystem& system, const SimTK::SimbodyMatterSubsystem& matter, SimTK::State& RefState,
-	double GroundBarLenght, double StdDev = 0) : Measuring_Instrument(system, matter, RefState, StdDev),
+	double GroundBarLenght, double StdDev = 0) : Simbody_Instrument(system, matter, RefState, StdDev),
 	m_GroundBarLenght(GroundBarLenght) {}
 
 void Gyroscope::measure(){
