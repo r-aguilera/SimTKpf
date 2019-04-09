@@ -1,10 +1,7 @@
-# C++ library: ParticleFilter with SimBody
+# SimTKpf
 
-Authors: xxx
-License: GNU GPL v3
+This is my end-of-degree project, a C++ library for state estimation using particle filters and [Simbody](https://simtk.org/projects/simbody/), another library for multibody dynamics.
 
-## Description
+## How to use it
 
-Write me!
-
-
+You will need to install Simbody first. Follow its [Github repository](https://github.com/simbody/simbody) installation steps. Then use the software mentioned there (acording to your OS) to generate and build **SimTKpf** project.
