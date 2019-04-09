@@ -120,8 +120,8 @@ int main() {
 		resample_noise.setSeed(getSeed());
 
 		Stopwatch CPU_time(StopwatchMode::CPU_Time);	// This will count CPU time
-		double bel;				// Advanced angular velocity (belief)
-
+		double bel;					// Advanced angular velocity (belief)
+		double StdDev_Modifier = 1;	// Coefficient to modify GYROSCOPE_STDDEV value seen by NormalProb function
 		CPU_time.start();
 
 		for (double time = 0; time <= SIMULATION_TIME; time += SIM_TIME_STEP) {	// Loop to slowly advance simulation
@@ -153,7 +153,7 @@ int main() {
 
 			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++){	// Update particles weight according to the prediction
 				bel = pargyr[i].read();
-				particles[i].updWeight() += NormalProb(bel, gyr.read(), GYROSCOPE_STDDEV);	// Update weights
+				particles[i].updWeight() += NormalProb(bel, gyr.read(), StdDev_Modifier*GYROSCOPE_STDDEV);	// Update weights
 			}
 			particles.normalizeWeights();
 			particles.calculateESS();
@@ -177,8 +177,8 @@ int main() {
 					double Rate = Bar1.getRate(particles[i].updState());
 					Bar1.setRate(particles[i].updState(), Rate + resample_noise.getValue());
 				}
-
-				if (OUTPUT_IS_ENABLED)	std::cout << "\nResample done!" << std::endl;
+				StdDev_Modifier += 0.5;
+				if (OUTPUT_IS_ENABLED)	std::cout << "\nResample done! StdDev_Modifier = " << StdDev_Modifier << std::endl;
 			}
 
 			if (OUTPUT_IS_ENABLED) {
