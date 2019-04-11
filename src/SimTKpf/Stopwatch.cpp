@@ -1,6 +1,6 @@
 #include "Simbody.h"
-#include "Measuring_Instrument.h"
-#include "Stopwatch.h"
+#include "SimTKpf/Measuring_Instrument.h"
+#include "SimTKpf/Stopwatch.h"
 
 // Stopwatch Implementation
 

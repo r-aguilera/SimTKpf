@@ -1,8 +1,8 @@
 #include <fstream>
 #include "Simbody.h"
-#include "PF_utilities.h"
-#include "Gyroscope.h"
-#include "Txt_write.h"
+#include "SimTKpf/PF_utilities.h"
+#include "Fourbar/Gyroscope.h"
+#include "Fourbar/Txt_write.h"
 
 void Angle_write(SimTK::State& ref_State, ParticleList& particles) {
 

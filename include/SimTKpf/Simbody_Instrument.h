@@ -2,7 +2,7 @@
 #define _SIMBODY_INSTRUMENT_
 
 #include "Simbody.h"
-#include "Measuring_Instrument.h"
+#include "SimTKpf/Measuring_Instrument.h"
 
 // Class for not-ideal measuring instruments given Simbody systems and a State:
 

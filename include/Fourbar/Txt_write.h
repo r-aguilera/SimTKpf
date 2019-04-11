@@ -2,8 +2,8 @@
 #define _TXT_WRITE_
 
 #include "Simbody.h"
-#include "PF_utilities.h"
-#include "Gyroscope.h"
+#include "SimTKpf/PF_utilities.h"
+#include "Fourbar/Gyroscope.h"
 
 // This will write reference and particles both angle into an txt file:
 

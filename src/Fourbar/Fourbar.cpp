@@ -3,9 +3,9 @@
 //#include <cmath>		// Already included in "Simbody.h"?
 //#include <algorithm>	// Maybe useful in future
 #include "Simbody.h"
-#include "PF_utilities.h"
-#include "Gyroscope.h"
-#include "Txt_write.h"
+#include "SimTKpf/PF_utilities.h"
+#include "Fourbar/Gyroscope.h"
+#include "Fourbar/Txt_write.h"
 
 int main() {
 	std::array <double, 4> BAR_LENGHTS = { // Examples: Double Crank: (2, 4, 3, 4), Crank-Rocker: (4, 2, 3, 4)

@@ -2,7 +2,7 @@
 #define _STOPWATCH_
 
 #include "Simbody.h"
-#include "Measuring_Instrument.h"
+#include "SimTKpf/Measuring_Instrument.h"
 
 // Mode variable to decide if measuring real time or CPU time:
 

@@ -1,6 +1,6 @@
 #include "Simbody.h"
-#include "Measuring_Instrument.h"
-#include "Simbody_Instrument.h"
+#include "SimTKpf/Measuring_Instrument.h"
+#include "SimTKpf/Simbody_Instrument.h"
 
 Simbody_Instrument::Simbody_Instrument(const SimTK::MultibodySystem& system, const SimTK::SimbodyMatterSubsystem& matter,
 		SimTK::State& RefState, double StdDev = 0) : m_system(system), m_matter(matter), rf_state(RefState), m_StdDev(StdDev) {}

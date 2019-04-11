@@ -8,23 +8,23 @@ project(SimTKpf)
 
 # List your source and header files here.
 set(my_source_files
-	src/Gyroscope.cpp
-	src/Measuring_Instrument.cpp
-	src/Particle_Classes.cpp
-	src/PF_utilities.cpp
-	src/Simbody_Instrument.cpp
-	src/Stopwatch.cpp
-	src/Txt_write.cpp
+	src/Fourbar/Gyroscope.cpp
+	src/Fourbar/Txt_write.cpp
+	src/SimTKpf/Measuring_Instrument.cpp
+	src/SimTKpf/Particle_Classes.cpp
+	src/SimTKpf/PF_utilities.cpp
+	src/SimTKpf/Simbody_Instrument.cpp
+	src/SimTKpf/Stopwatch.cpp
 )
 
 set(my_header_files
-	include/Gyroscope.h
-	include/Measuring_Instrument.h
-	include/Particle_Classes.h
-	include/PF_utilities.h
-	include/Simbody_Instrument.h
-	include/Stopwatch.h
-	include/Txt_write.h
+	include/Fourbar/Gyroscope.h
+	include/Fourbar/Txt_write.h
+	include/SimTKpf/Measuring_Instrument.h
+	include/SimTKpf/Particle_Classes.h
+	include/SimTKpf/PF_utilities.h
+	include/SimTKpf/Simbody_Instrument.h
+	include/SimTKpf/Stopwatch.h
 )
 
 # This depends on SimbodyConfig.cmake being located somewhere predictable
@@ -39,9 +39,9 @@ add_library(SimTKpf ${my_source_files} ${my_header_files})
 target_link_libraries(SimTKpf PUBLIC ${Simbody_LIBRARIES})
 target_include_directories(SimTKpf PUBLIC "${CMAKE_SOURCE_DIR}/include")
 
-add_executable(Fourbar src/Fourbar.cpp)
+add_executable(Fourbar src/Fourbar/Fourbar.cpp)
 target_link_libraries(Fourbar SimTKpf)
-add_executable(Fourbar_StdDevTest src/Fourbar_StdDevTest.cpp)
+add_executable(Fourbar_StdDevTest src/Fourbar/Fourbar_StdDevTest.cpp)
 target_link_libraries(Fourbar_StdDevTest SimTKpf)
-add_executable(Fourbar_PtNumberTest src/Fourbar_PtNumberTest.cpp)
+add_executable(Fourbar_PtNumberTest src/Fourbar/Fourbar_PtNumberTest.cpp)
 target_link_libraries(Fourbar_PtNumberTest SimTKpf)
