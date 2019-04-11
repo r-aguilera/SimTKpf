@@ -24,13 +24,6 @@ int main() {
 	const bool TXT_WRITING_IS_ENABLED = true;
 	const bool OUTPUT_IS_ENABLED = false;
 
-	/*
-	const SimTK::String WINDOW_TITLE = "Four bar linkage // Particle Filter";
-	const double TIME_SCALE = 1;
-	const double FRAME_RATE = 30;
-	const double VIZ_REPORT_INTERVAL = TIME_SCALE / FRAME_RATE;	// Overwrite to specific interval report	*/
-	
-
 	try {
 		// Create the system.
 		SimTK::MultibodySystem system;
@@ -63,13 +56,6 @@ int main() {
 			Body3, SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[3], 0)));
 		
 		SimTK::Constraint::Ball(matter.Ground(), SimTK::Vec3(0), Bar3, SimTK::Vec3(0));
-		//SimTK::Constraint::CoincidentPoints(matter.Ground(), SimTK::Vec3(0), Bar3, SimTK::Vec3(0));	// Same as Ball
-		
-		/*		// Set up visualization.
-		SimTK::Visualizer viz(system);
-		system.addEventReporter(new SimTK::Visualizer::Reporter(viz,VIZ_REPORT_INTERVAL ));
-		viz.setWindowTitle(WINDOW_TITLE);
-		viz.setDesiredFrameRate(FRAME_RATE);	//*/
 		
 		// Initialize the system, reference state and particles.
 		system.realizeTopology();
