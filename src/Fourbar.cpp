@@ -16,12 +16,13 @@ int main() {
 	const double BAR_WIDTH = 0.05;
 	const double SIM_TIME_STEP = 0.006;
 	const double SIMULATION_TIME = 60;
-	const double GYROSCOPE_STDDEV = 0.005;
+	const double GYROSCOPE_STDDEV = 0.01;
+	const double UPDATING_STDDEV_MOD = 10;
 	const double MOTION_STDDEV = 0.02;
 	const double RESAMPLE_STDDEV = 0.02;
 	const std::size_t PARTICLE_NUMBER = 200;
-	const bool TXT_WRITING_IS_ENABLED = false;
-	const bool OUTPUT_IS_ENABLED = true;
+	const bool TXT_WRITING_IS_ENABLED = true;
+	const bool OUTPUT_IS_ENABLED = false;
 
 	/*
 	const SimTK::String WINDOW_TITLE = "Four bar linkage // Particle Filter";
@@ -119,9 +120,8 @@ int main() {
 		motion_noise.setSeed(getSeed());
 		resample_noise.setSeed(getSeed());
 
-		Stopwatch CPU_time(StopwatchMode::CPU_Time);	// This will count CPU time
-		double bel;					// Advanced angular velocity (belief)
-		double StdDev_Modifier = 1;	// Coefficient to modify GYROSCOPE_STDDEV value seen by NormalProb function
+		double bel;		// Advanced angular velocity (belief)
+		Stopwatch CPU_time(StopwatchMode::CPU_Time);
 		CPU_time.start();
 
 		for (double time = 0; time <= SIMULATION_TIME; time += SIM_TIME_STEP) {	// Loop to slowly advance simulation
@@ -153,7 +153,7 @@ int main() {
 
 			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++){	// Update particles weight according to the prediction
 				bel = pargyr[i].read();
-				particles[i].updWeight() += NormalProb(bel, gyr.read(), StdDev_Modifier*GYROSCOPE_STDDEV);	// Update weights
+				particles[i].updWeight() += NormalProb(bel, gyr.read(), 10*GYROSCOPE_STDDEV);	// Update weights
 			}
 			particles.normalizeWeights();
 			particles.calculateESS();
@@ -166,9 +166,9 @@ int main() {
 						static_cast<double>(particles[i].getWeight()),	static_cast<double>(to2Pi(particles[i].getState().getQ()[0]))
 					);
 				std::cout << "\n\nReference Gyroscope: " << gyr.read() << std::endl;
-				std::cout << "Reference Angle: " << to2Pi(RefState.getQ()[0]) << std::endl;
+				
 				printf("\n ESS = %f %%\n", static_cast<double>(particles.getESS() * 100));
-			}
+			}std::cout << "Reference Angle: " << to2Pi(RefState.getQ()[0]) << std::endl;
 
 			if (particles.getESS() < 0.5) {		// Resample when < 50 % of effective particles
 				particles.resample();
@@ -177,8 +177,8 @@ int main() {
 					double Rate = Bar1.getRate(particles[i].updState());
 					Bar1.setRate(particles[i].updState(), Rate + resample_noise.getValue());
 				}
-				StdDev_Modifier += 0.5;
-				if (OUTPUT_IS_ENABLED)	std::cout << "\nResample done! StdDev_Modifier = " << StdDev_Modifier << std::endl;
+				//StdDev_Modifier += 0.5;
+				if (OUTPUT_IS_ENABLED)	std::cout << "\nResample done! StdDev_Modifier = " << UPDATING_STDDEV_MOD << std::endl;
 			}
 
 			if (OUTPUT_IS_ENABLED) {
