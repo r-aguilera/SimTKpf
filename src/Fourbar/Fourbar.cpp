@@ -13,7 +13,6 @@ int main() {
 		4,		// Bar2 lenght
 		3,		// Bar3 lenght
 		4 };	// Bar4 lenght
-	const double BAR_WIDTH = 0.05;
 	const double SIM_TIME_STEP = 0.006;
 	const double SIMULATION_TIME = 60;
 	const double GYROSCOPE_STDDEV = 0.01;
@@ -27,31 +26,21 @@ int main() {
 	try {
 		// Create the system.
 		SimTK::MultibodySystem system;
-		system.setUseUniformBackground(true);
 		SimTK::SimbodyMatterSubsystem matter(system);
 		SimTK::GeneralForceSubsystem forces(system);
 		SimTK::Force::UniformGravity gravity(forces, matter, SimTK::Vec3(0, -9.8, 0));
 
 		SimTK::Body::Rigid Body1, Body2, Body3;
 		
-		matter.Ground().addBodyDecoration(SimTK::Transform(SimTK::Rotation(SimTK::Pi/2, SimTK::Vec3(0 , 0, 1)), 
-			SimTK::Vec3(-BAR_LENGHTS[0] / 2, 0, 0)), SimTK::DecorativeCylinder(BAR_WIDTH, BAR_LENGHTS[0] / 2));
-
 		Body1.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(0, BAR_LENGHTS[1] / 2, 0), SimTK::Inertia(1)));
-		Body1.addDecoration(SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[1] / 2, 0)),
-			SimTK::DecorativeCylinder(BAR_WIDTH, BAR_LENGHTS[1] / 2));
 		SimTK::MobilizedBody::Pin Bar1(matter.Ground(), SimTK::Transform(SimTK::Vec3(-BAR_LENGHTS[0], 0, 0)),
 			Body1, SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[1], 0)));
 
 		Body2.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(0, BAR_LENGHTS[2] / 2, 0), SimTK::Inertia(1)));
-		Body2.addDecoration(SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[2] / 2, 0)),
-			SimTK::DecorativeCylinder(BAR_WIDTH, BAR_LENGHTS[2] / 2));
 		SimTK::MobilizedBody::Pin Bar2(Bar1, SimTK::Transform(SimTK::Vec3(0)),
 			Body2, SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[2], 0)));
 
 		Body3.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(0, BAR_LENGHTS[3] / 2, 0), SimTK::Inertia(1)));
-		Body3.addDecoration(SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[3] / 2, 0)),
-			SimTK::DecorativeCylinder(BAR_WIDTH, BAR_LENGHTS[3] / 2));
 		SimTK::MobilizedBody::Pin Bar3(Bar2, SimTK::Transform(SimTK::Vec3(0)),
 			Body3, SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[3], 0)));
 		
@@ -163,7 +152,7 @@ int main() {
 					double Rate = Bar1.getRate(particles[i].updState());
 					Bar1.setRate(particles[i].updState(), Rate + resample_noise.getValue());
 				}
-				//StdDev_Modifier += 0.5;
+				
 				if (OUTPUT_IS_ENABLED)	std::cout << "\nResample done! StdDev_Modifier = " << UPDATING_STDDEV_MOD << std::endl;
 			}
 
