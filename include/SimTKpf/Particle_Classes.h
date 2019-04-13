@@ -54,6 +54,7 @@ public:
 
 	const std::vector<ParticleDynState>& getAllParticles() const;	// Return the whole particle list as a read-only vector
 	std::vector<ParticleDynState>& updAllParticles();				// Return the whole particle list as a writable vector
+	std::size_t size() const;										// Return size of the particle list
 
 	void advanceStates(SimTK::TimeStepper& ts, const double dt);	// Evolve all particles State
 	

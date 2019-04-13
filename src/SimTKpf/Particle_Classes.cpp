@@ -70,6 +70,9 @@ const std::vector <ParticleDynState>& ParticleList::getAllParticles() const {
 std::vector <ParticleDynState>& ParticleList::updAllParticles() {
 	return particles;
 }
+std::size_t ParticleList::size() const {
+	return particles.size();
+}
 
 void ParticleList::advanceStates(SimTK::TimeStepper& ts, const double dt) {
 	for (auto it = particles.begin(); it != particles.end(); ++it) {
