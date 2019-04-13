@@ -12,6 +12,7 @@ set(my_source_files
 	src/Fourbar/Txt_write.cpp
 	src/SimTKpf/Measuring_Instrument.cpp
 	src/SimTKpf/Particle_Classes.cpp
+	src/SimTKpf/Particle_Filter.cpp
 	src/SimTKpf/PF_utilities.cpp
 	src/SimTKpf/Simbody_Instrument.cpp
 	src/SimTKpf/Stopwatch.cpp
@@ -20,8 +21,10 @@ set(my_source_files
 set(my_header_files
 	include/Fourbar/Gyroscope.h
 	include/Fourbar/Txt_write.h
+	include/SimTKpf.h
 	include/SimTKpf/Measuring_Instrument.h
 	include/SimTKpf/Particle_Classes.h
+	include/SimTKpf/Particle_Filter.h
 	include/SimTKpf/PF_utilities.h
 	include/SimTKpf/Simbody_Instrument.h
 	include/SimTKpf/Stopwatch.h
