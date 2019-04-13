@@ -31,7 +31,7 @@ private:
 };
 
 
-// Class for particle vectors with usefull member functions to manage their weight and state and vector size:
+// Class for particle vectors with useful member functions to manage their weight and state and vector size:
 
 class ParticleList {
 public:

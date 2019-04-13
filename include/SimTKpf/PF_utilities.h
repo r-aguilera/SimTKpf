@@ -2,16 +2,12 @@
 #define _PF_UTILITIES_
 
 #include "Simbody.h"
-#include "SimTKpf/Particle_Classes.h"
-#include "SimTKpf/Measuring_Instrument.h"
-#include "SimTKpf/Simbody_Instrument.h"
-#include "SimTKpf/Stopwatch.h"
 
 // Function to make a single State progress.
 void advance(SimTK::State&, SimTK::TimeStepper&, const double);
 
 // Return the exponent of a gaussian distribution function evaluated at x, given the mean and standart deviation s: 
-double NormalProb(const double, const double, const double);
+double LogNormalProb(const double, const double, const double);
 
 // Return the given angle, expressed in the range [0, 2*Pi). Input/Output in radians!
 inline double to2Pi(double Angle) {
