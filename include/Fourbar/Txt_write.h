@@ -3,6 +3,7 @@
 
 #include "Simbody.h"
 #include "SimTKpf/PF_utilities.h"
+#include "SimTKpf/Particle_Classes.h"
 #include "Fourbar/Gyroscope.h"
 
 // This will write reference and particles both angle into an txt file:

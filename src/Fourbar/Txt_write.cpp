@@ -1,6 +1,7 @@
 #include <fstream>
 #include "Simbody.h"
 #include "SimTKpf/PF_utilities.h"
+#include "SimTKpf/Particle_Classes.h"
 #include "Fourbar/Gyroscope.h"
 #include "Fourbar/Txt_write.h"
 
