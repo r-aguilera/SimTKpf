@@ -24,7 +24,6 @@ int main() {
 		MOTION_STDDEV,
 		RESAMPLE_STDDEV
 	);
-	
 	ParticleFilter FILTER(PARTICLE_NUMBER, PARTICLE_FILTER_OPTIONS);
 
 	std::array <double, 4> BAR_LENGHTS = { // Examples: Double Crank: (2, 4, 3, 4), Crank-Rocker: (4, 2, 3, 4)
@@ -70,7 +69,7 @@ int main() {
 		// We will random assign the reference state and particle states in the next block
 		{
 			SimTK::Random::Uniform randomAngle(0, 2 * SimTK::Pi);
-			//randomAngle.setSeed(getSeed());/////////////////////////////////////////////////////////////////////////////////////
+			randomAngle.setSeed(getSeed());
 
 			if (OUTPUT_IS_ENABLED) std::cout << "Assigning and assembling Reference state...";
 
@@ -96,14 +95,16 @@ int main() {
 		
 		Gyroscope gyr(system, matter, RefState, BAR_LENGHTS[0], GYROSCOPE_STDDEV);	// Gyroscope used by reference state
 		std::vector<Gyroscope> pargyr;												// Vector of gyroscopes used by particles
+
 		pargyr.reserve(PARTICLE_NUMBER);
-		for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)							// Arrange gyroscope vector
-			pargyr.push_back(Gyroscope(system, matter, FILTER.updParticleVec()[i].updState(),
-				BAR_LENGHTS[0], 0));
-		//Gyroscope::setGlobalSeed(getSeed());//////////////////////////////////////////////////////////////////////////////////////
+
+		for (std::size_t i = 0; i < PARTICLE_NUMBER; i++) {							// Arrange gyroscope vector
+			pargyr.push_back(Gyroscope(system, matter, FILTER.updParticleVec()[i].updState(), BAR_LENGHTS[0], 0));
+		}
+		Gyroscope::setGlobalSeed(getSeed());
 
 		SimTK::Random::Gaussian resample_noise(0, RESAMPLE_STDDEV);	// Gaussian noise added during resampling
-		//resample_noise.setSeed(getSeed());////////////////////////////////////////////////////////////////////////////////////////
+		resample_noise.setSeed(getSeed());
 		Stopwatch CPU_time(StopwatchMode::CPU_Time);
 		CPU_time.start();
 
@@ -120,13 +121,11 @@ int main() {
 				Omega_write(gyr, pargyr);
 			}
 
-			advance(RefState, ts, SIM_TIME_STEP);			// Advance reference state
-			FILTER.updateStates(ts, assembler);
-
-			gyr.measure();					// Update reference state gyroscope reading
-			FILTER.updateWeights(&pargyr);
-
-			FILTER.calculateESS();
+			advance(RefState, ts, SIM_TIME_STEP);					// Advance reference state
+			FILTER.updateStates(ts, assembler);						// Advance particles state
+			gyr.measure();											// Update reference gyroscope reading
+			FILTER.updateWeights<Gyroscope>(gyr.read(), pargyr);	// Update particles gyroscope reading and weights
+			FILTER.calculateESS();									// Calculate particles ESS
 
 			if (OUTPUT_IS_ENABLED) {
 				printf("\nPARTICLE SUMMARY:\n");
@@ -148,7 +147,7 @@ int main() {
 					Bar1.setRate(FILTER.updParticleVec()[i].updState(), Rate + resample_noise.getValue());
 				}
 				
-				if (OUTPUT_IS_ENABLED)	std::cout << "\nResample done! StdDev_Modifier = " << UPDATING_STDDEV_MOD << std::endl;
+				if (OUTPUT_IS_ENABLED)	std::cout << "\nResample done!" << std::endl;
 			}
 
 			if (OUTPUT_IS_ENABLED) {

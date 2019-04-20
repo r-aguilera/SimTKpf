@@ -72,7 +72,8 @@ public:
 	void updateStates(SimTK::TimeStepper&, SimTK::Assembler&);
 
 	// Make a prediction and update weights accordingly.
-	void updateWeights(std::vector<Simbody_Instrument>*);
+	template<class customInstrument>
+	void updateWeights(double, std::vector<customInstrument>&);
 
 	// Replace particles according to their weights.
 	void resample();
@@ -82,5 +83,21 @@ private:
 	PF_Options& Filter_Options;
 };
 
+// Template Implementation
+template<class customInstrument>
+void ParticleFilter::updateWeights(double GroundTruthInstr_reading, std::vector<customInstrument>& InstrVec) {
+
+	double Instrument_StdDev = Filter_Options.getOption(PF_Options_index::SENSOR_STDDEV);
+	double Modified_Instrument_StdDev = Instrument_StdDev * Filter_Options.getOption(PF_Options_index::SENSOR_STDDEV_MOD);
+	double belief;
+
+	for (std::size_t i = 0; i < Particles.size(); i++) {
+		InstrVec[i].measure();										// Update instrument reading
+		belief = InstrVec[i].read();								// Make the prediction
+		Particles[i].updWeight() += LogNormalProb(belief,			// Update weights
+			GroundTruthInstr_reading, Modified_Instrument_StdDev);
+	}
+	Particles.normalizeWeights();
+}
 
 #endif

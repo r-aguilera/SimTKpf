@@ -105,24 +105,6 @@ void ParticleFilter::updateStates(SimTK::TimeStepper& ts, SimTK::Assembler& asse
 	}
 }
 
-
-void ParticleFilter::updateWeights(std::vector<Simbody_Instrument> *customInstrVec) {
-	
-	double GroundTruthInstr_reading = Filter_Options.getOption(PF_Options_index::SENSOR_STDDEV);
-	double Modified_Instrument_StdDev = Filter_Options.getOption(PF_Options_index::SENSOR_STDDEV_MOD);
-	double belief;
-	Simbody_Instrument *customInstr;
-
-	for (std::size_t i = 0; i < Particles.size(); i++){
-		customInstr = &customInstrVec->operator[](i);
-		customInstr->measure();												// Update instrument reading
-		belief = customInstr->read();										// Make the prediction
-		Particles[i].updWeight() += LogNormalProb(							// Update weights
-			belief, GroundTruthInstr_reading, Modified_Instrument_StdDev);	
-	}
-	Particles.normalizeWeights();
-}
-
-void ParticleFilter::resample(){
+void ParticleFilter::resample() {
 	Particles.resample();
 }

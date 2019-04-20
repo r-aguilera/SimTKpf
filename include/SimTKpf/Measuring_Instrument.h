@@ -5,7 +5,7 @@
 
 class Measuring_Instrument {
 public:
-	virtual void measure();	// Update instrument reading. Virtual, must be overriden
+	virtual void measure()=0;	// Update instrument reading. Pure virtual, must be overriden
 	virtual const double read();	// Return instrument reading
 
 protected:
