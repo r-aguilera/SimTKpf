@@ -13,6 +13,7 @@ set(my_source_files
 	src/SimTKpf/Measuring_Instrument.cpp
 	src/SimTKpf/Particle_Classes.cpp
 	src/SimTKpf/Particle_Filter.cpp
+	src/SimTKpf/PF_Options.cpp
 	src/SimTKpf/PF_utilities.cpp
 	src/SimTKpf/Simbody_Instrument.cpp
 	src/SimTKpf/Stopwatch.cpp
@@ -26,6 +27,7 @@ set(my_header_files
 	include/SimTKpf/Particle_Classes.h
 	include/SimTKpf/Particle_Filter.h
 	include/SimTKpf/PF_utilities.h
+	include/SimTKpf/PF_Options.h
 	include/SimTKpf/Simbody_Instrument.h
 	include/SimTKpf/Stopwatch.h
 )
