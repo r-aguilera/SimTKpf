@@ -44,7 +44,7 @@ void PF_Options::setOption(PF_Options_index index, double newValue) {
 		case PF_Options_index::SENSOR_STDDEV_MOD:		SENSOR_STDDEV_MOD		= newValue;		break;
 		case PF_Options_index::MOTION_STDDEV:			MOTION_STDDEV			= newValue;		break;
 		case PF_Options_index::RESAMPLE_STDDEV:			RESAMPLE_STDDEV			= newValue;		break;
-		default: throw;
+		default: throw PF_Options_exception();
 	}	
 }
 
@@ -55,7 +55,7 @@ const double PF_Options::getOption(PF_Options_index index) const {
 		case PF_Options_index::SENSOR_STDDEV_MOD:		return SENSOR_STDDEV_MOD;		break;
 		case PF_Options_index::MOTION_STDDEV:			return MOTION_STDDEV;			break;
 		case PF_Options_index::RESAMPLE_STDDEV:			return RESAMPLE_STDDEV;			break;
-		default: throw;
+		default: throw PF_Options_exception();
 	}
 }
 
@@ -66,7 +66,7 @@ double& PF_Options::updOption(PF_Options_index index) {
 		case PF_Options_index::SENSOR_STDDEV_MOD:		return SENSOR_STDDEV_MOD;		break;
 		case PF_Options_index::MOTION_STDDEV:			return MOTION_STDDEV;			break;
 		case PF_Options_index::RESAMPLE_STDDEV:			return RESAMPLE_STDDEV;			break;
-		default: throw;
+		default: throw PF_Options_exception();
 	}
 }
 

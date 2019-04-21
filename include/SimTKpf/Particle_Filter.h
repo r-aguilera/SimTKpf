@@ -15,6 +15,13 @@ enum class PF_Options_index {
 	RESAMPLE_STDDEV
 };
 
+// Exception in case of unexpected behaviour using PF_Option_index class:
+class PF_Options_exception : public std::exception {
+	virtual const char* what() const throw(){
+		return "PF_Option_index used does not match existing ones. \nDefault statement reached in switch statements of ParticleFilter.cpp methods:\nsetOption, getOption or updOption";
+	}
+};
+
 // Options class for particle filter algorithm:
 class PF_Options {
 public:
