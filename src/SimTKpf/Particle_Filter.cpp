@@ -38,27 +38,36 @@ void PF_Options::operator =(PF_Options PF_Options2) {
 }
 
 void PF_Options::setOption(PF_Options_index index, double newValue) {
-	if		(index == PF_Options_index::SIMULATION_TIME_STEP)	SIMULATION_TIME_STEP	= newValue;
-	else if (index == PF_Options_index::SENSOR_STDDEV)			SENSOR_STDDEV			= newValue;
-	else if (index == PF_Options_index::SENSOR_STDDEV_MOD)		SENSOR_STDDEV_MOD		= newValue;
-	else if (index == PF_Options_index::MOTION_STDDEV)			MOTION_STDDEV			= newValue;
-	else if (index == PF_Options_index::RESAMPLE_STDDEV)		RESAMPLE_STDDEV			= newValue;
+	switch (index) {
+		case PF_Options_index::SIMULATION_TIME_STEP:	SIMULATION_TIME_STEP	= newValue;		break;
+		case PF_Options_index::SENSOR_STDDEV:			SENSOR_STDDEV			= newValue;		break;
+		case PF_Options_index::SENSOR_STDDEV_MOD:		SENSOR_STDDEV_MOD		= newValue;		break;
+		case PF_Options_index::MOTION_STDDEV:			MOTION_STDDEV			= newValue;		break;
+		case PF_Options_index::RESAMPLE_STDDEV:			RESAMPLE_STDDEV			= newValue;		break;
+		default: throw;
+	}	
 }
 
 const double PF_Options::getOption(PF_Options_index index) const {
-	if		(index == PF_Options_index::SIMULATION_TIME_STEP)	return SIMULATION_TIME_STEP;
-	else if (index == PF_Options_index::SENSOR_STDDEV)			return SENSOR_STDDEV;
-	else if (index == PF_Options_index::SENSOR_STDDEV_MOD)		return SENSOR_STDDEV_MOD;
-	else if (index == PF_Options_index::MOTION_STDDEV)			return MOTION_STDDEV;
-	else if (index == PF_Options_index::RESAMPLE_STDDEV)		return RESAMPLE_STDDEV;
+	switch (index) {
+		case PF_Options_index::SIMULATION_TIME_STEP:	return SIMULATION_TIME_STEP;	break;
+		case PF_Options_index::SENSOR_STDDEV:			return SENSOR_STDDEV;			break;
+		case PF_Options_index::SENSOR_STDDEV_MOD:		return SENSOR_STDDEV_MOD;		break;
+		case PF_Options_index::MOTION_STDDEV:			return MOTION_STDDEV;			break;
+		case PF_Options_index::RESAMPLE_STDDEV:			return RESAMPLE_STDDEV;			break;
+		default: throw;
+	}
 }
 
 double& PF_Options::updOption(PF_Options_index index) {
-	if		(index == PF_Options_index::SIMULATION_TIME_STEP)	return SIMULATION_TIME_STEP;
-	else if (index == PF_Options_index::SENSOR_STDDEV)			return SENSOR_STDDEV;
-	else if (index == PF_Options_index::SENSOR_STDDEV_MOD)		return SENSOR_STDDEV_MOD;
-	else if (index == PF_Options_index::MOTION_STDDEV)			return MOTION_STDDEV;
-	else if (index == PF_Options_index::RESAMPLE_STDDEV)		return RESAMPLE_STDDEV;
+	switch (index) {
+		case PF_Options_index::SIMULATION_TIME_STEP:	return SIMULATION_TIME_STEP;	break;
+		case PF_Options_index::SENSOR_STDDEV:			return SENSOR_STDDEV;			break;
+		case PF_Options_index::SENSOR_STDDEV_MOD:		return SENSOR_STDDEV_MOD;		break;
+		case PF_Options_index::MOTION_STDDEV:			return MOTION_STDDEV;			break;
+		case PF_Options_index::RESAMPLE_STDDEV:			return RESAMPLE_STDDEV;			break;
+		default: throw;
+	}
 }
 
 
