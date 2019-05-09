@@ -6,17 +6,15 @@
 #include "SimTKpf.h"
 #include "Fourbar/Gyroscope.h"
 #include "Fourbar/Txt_write.h"
+#include "Fourbar/Grashof_condition.h"
 
 int main() {
-	std::size_t PARTICLE_NUMBER = 200;
 	double SIMULATION_TIME = 60;
-
 	double SIM_TIME_STEP = 0.006;
 	double GYROSCOPE_STDDEV = 0.01;
 	double UPDATING_STDDEV_MOD = 10;
 	double MOTION_STDDEV = 0.02;
 	double RESAMPLE_STDDEV = 0.02;
-	
 	PF_Options PARTICLE_FILTER_OPTIONS(
 		SIM_TIME_STEP,
 		GYROSCOPE_STDDEV,
@@ -24,13 +22,15 @@ int main() {
 		MOTION_STDDEV,
 		RESAMPLE_STDDEV
 	);
+	std::size_t PARTICLE_NUMBER = 200;
 	ParticleFilter FILTER(PARTICLE_NUMBER, PARTICLE_FILTER_OPTIONS);
-
-	std::array <double, 4> BAR_LENGHTS = { // Examples: Double Crank: (2, 4, 3, 4), Crank-Rocker: (4, 2, 3, 4)
+	
+	std::vector <double> BAR_LENGHTS = { // Examples: Double Crank: (2, 4, 3, 4), Crank-Rocker: (4, 2, 3, 4)
 		2,		// Bar1 lenght
 		4,		// Bar2 lenght
 		3,		// Bar3 lenght
 		4 };	// Bar4 lenght
+	GrashofCondition FOURBAR_CONFIGURATION = evaluateGrashof(BAR_LENGHTS);
 	const bool TXT_WRITING_IS_ENABLED = false;
 	const bool OUTPUT_IS_ENABLED = true;
 
@@ -71,8 +71,9 @@ int main() {
 			SimTK::Random::Uniform randomAngle(0, 2 * SimTK::Pi);
 			randomAngle.setSeed(getSeed());
 
-			if (OUTPUT_IS_ENABLED) std::cout << "Assigning and assembling Reference state...";
-
+			if (OUTPUT_IS_ENABLED) std::cout << FOURBAR_CONFIGURATION.get_description()
+				<< "\n\nAssigning and assembling Reference state...";
+			
 			RefState.updQ()[0] = randomAngle.getValue();
 			assembler.assemble(RefState);
 
