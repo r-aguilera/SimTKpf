@@ -17,6 +17,10 @@ public:
 	const PF_Options getOptions() const;	// Return filter options as read-only PF_Options class
 	PF_Options& updOptions();				// Return filter options as writable PF_Options class
 
+	void setOneOption(PF_Options_index, double);		// Write single option value
+	const double getOneOption(PF_Options_index) const;	// Return single option as read-only double value
+	double& updOneOption(PF_Options_index);				// Return single option as writable double value
+
 	const ParticleList getParticleList() const;	// Return particles as read-only ParticleList class
 	ParticleList& updParticleList();			// Return particles as writable ParticleList class
 

@@ -33,9 +33,9 @@ public:
 	void setOptions(double, double, double, double, double);
 	void operator =(PF_Options);
 
-	void setOption(PF_Options_index, double);		// Write single option value
-	const double getOption(PF_Options_index) const;	// Return single option as read-only double value
-	double& updOption(PF_Options_index);			// Return single option as writable double value
+	void setOneOption(PF_Options_index, double);		// Write single option value
+	const double getOneOption(PF_Options_index) const;	// Return single option as read-only double value
+	double& updOneOption(PF_Options_index);			// Return single option as writable double value
 
 private:
 	double SIMULATION_TIME_STEP;

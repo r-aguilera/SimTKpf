@@ -33,7 +33,7 @@ void PF_Options::operator =(PF_Options PF_Options2) {
 	RESAMPLE_STDDEV = PF_Options2.RESAMPLE_STDDEV;
 }
 
-void PF_Options::setOption(PF_Options_index index, double newValue) {
+void PF_Options::setOneOption(PF_Options_index index, double newValue) {
 	switch (index) {
 		case PF_Options_index::SIMULATION_TIME_STEP:	SIMULATION_TIME_STEP	= newValue;		break;
 		case PF_Options_index::SENSOR_STDDEV:			SENSOR_STDDEV			= newValue;		break;
@@ -44,7 +44,7 @@ void PF_Options::setOption(PF_Options_index index, double newValue) {
 	}	
 }
 
-const double PF_Options::getOption(PF_Options_index index) const {
+const double PF_Options::getOneOption(PF_Options_index index) const {
 	switch (index) {
 		case PF_Options_index::SIMULATION_TIME_STEP:	return SIMULATION_TIME_STEP;	break;
 		case PF_Options_index::SENSOR_STDDEV:			return SENSOR_STDDEV;			break;
@@ -55,7 +55,7 @@ const double PF_Options::getOption(PF_Options_index index) const {
 	}
 }
 
-double& PF_Options::updOption(PF_Options_index index) {
+double& PF_Options::updOneOption(PF_Options_index index) {
 	switch (index) {
 		case PF_Options_index::SIMULATION_TIME_STEP:	return SIMULATION_TIME_STEP;	break;
 		case PF_Options_index::SENSOR_STDDEV:			return SENSOR_STDDEV;			break;

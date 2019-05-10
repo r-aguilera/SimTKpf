@@ -15,6 +15,10 @@ void ParticleFilter::setOptions(PF_Options newOptions)	{ Filter_Options = newOpt
 const PF_Options ParticleFilter::getOptions() const		{ return Filter_Options;		}
 PF_Options& ParticleFilter::updOptions()				{ return Filter_Options;		}
 
+void ParticleFilter::setOneOption(PF_Options_index index, double newValue)	{ Filter_Options.setOneOption(index, newValue); }
+const double ParticleFilter::getOneOption(PF_Options_index index) const		{ Filter_Options.getOneOption(index);			}
+double& ParticleFilter::updOneOption(PF_Options_index index)				{ Filter_Options.updOneOption(index);			}
+
 const ParticleList ParticleFilter::getParticleList() const	{ return Particles; }
 ParticleList& ParticleFilter::updParticleList()				{ return Particles; }
 
