@@ -3,6 +3,7 @@
 
 // PF_Options Implementation
 
+PF_Options::PF_Options() {};
 PF_Options::PF_Options(	
 	double PF_SIMULATION_TIME_STEP,		// Time step between two filter iterations
 	double PF_SENSOR_STDDEV,			// Standard deviation of Ground Truth sensor's noise 
