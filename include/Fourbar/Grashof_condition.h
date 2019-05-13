@@ -2,7 +2,7 @@
 #define _GRASHOF_CONDITION_
 
 #include <string>
-#include "Simbody.h"
+#include <vector>
 
 // Grashof condition class. It will contain a description string about if input & output bars of fourbar are crank, rocker, 
 // 0-rocker or Pi-rocker; and a bool containing if input bar is a crank and can fully rotate.

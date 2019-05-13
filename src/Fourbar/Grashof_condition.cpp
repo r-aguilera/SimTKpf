@@ -1,5 +1,5 @@
 #include <string>
-#include "Simbody.h"
+#include <vector>
 #include "Fourbar/Grashof_condition.h"
 
 // GrashofCondition Implementation
