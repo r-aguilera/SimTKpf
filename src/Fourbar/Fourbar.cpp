@@ -43,23 +43,23 @@ int main() {
 
 		SimTK::Body::Rigid Body1, Body2, Body3;
 		
-		Body1.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(0, BAR_LENGHTS[1] / 2, 0), SimTK::Inertia(1)));
+		Body1.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(-BAR_LENGHTS[1] / 2, 0, 0), SimTK::Inertia(1)));
 		SimTK::MobilizedBody::Pin Bar1(matter.Ground(), SimTK::Transform(SimTK::Vec3(-BAR_LENGHTS[0], 0, 0)),
-			Body1, SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[1], 0)));
+			Body1, SimTK::Transform(-SimTK::Vec3(BAR_LENGHTS[1], 0, 0)));
 
-		Body2.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(0, BAR_LENGHTS[2] / 2, 0), SimTK::Inertia(1)));
+		Body2.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(-BAR_LENGHTS[2] / 2, 0, 0), SimTK::Inertia(1)));
 		SimTK::MobilizedBody::Pin Bar2(Bar1, SimTK::Transform(SimTK::Vec3(0)),
-			Body2, SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[2], 0)));
+			Body2, SimTK::Transform(-SimTK::Vec3(BAR_LENGHTS[2], 0, 0)));
 
-		Body3.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(0, BAR_LENGHTS[3] / 2, 0), SimTK::Inertia(1)));
+		Body3.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(-BAR_LENGHTS[3] / 2, 0, 0), SimTK::Inertia(1)));
 		SimTK::MobilizedBody::Pin Bar3(Bar2, SimTK::Transform(SimTK::Vec3(0)),
-			Body3, SimTK::Transform(SimTK::Vec3(0, BAR_LENGHTS[3], 0)));
+			Body3, SimTK::Transform(-SimTK::Vec3(BAR_LENGHTS[3], 0, 0)));
 		
 		SimTK::Constraint::Ball(matter.Ground(), SimTK::Vec3(0), Bar3, SimTK::Vec3(0));
 		
 		// Initialize the system and reference state.
 		system.realizeTopology();
-		SimTK::State RefState = system.getDefaultState();
+		SimTK::State RefState = system.getDefaultState(); 
 
 		// Create and add assembler.
 		SimTK::Assembler assembler(system);
