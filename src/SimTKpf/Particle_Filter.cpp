@@ -16,8 +16,8 @@ const PF_Options ParticleFilter::getOptions() const		{ return Filter_Options;		}
 PF_Options& ParticleFilter::updOptions()				{ return Filter_Options;		}
 
 void ParticleFilter::setOneOption(PF_Options_index index, double newValue)	{ Filter_Options.setOneOption(index, newValue); }
-const double ParticleFilter::getOneOption(PF_Options_index index) const		{ Filter_Options.getOneOption(index);			}
-double& ParticleFilter::updOneOption(PF_Options_index index)				{ Filter_Options.updOneOption(index);			}
+const double ParticleFilter::getOneOption(PF_Options_index index) const		{ return Filter_Options.getOneOption(index);	}
+double& ParticleFilter::updOneOption(PF_Options_index index)				{ return Filter_Options.updOneOption(index);	}
 
 const ParticleList ParticleFilter::getParticleList() const	{ return Particles; }
 ParticleList& ParticleFilter::updParticleList()				{ return Particles; }
@@ -39,8 +39,8 @@ double ParticleFilter::getESS() const	{ return Particles.getESS();	}
 
 void ParticleFilter::updateStates(SimTK::TimeStepper& ts, SimTK::Assembler& assembler) {
 	
-	double const timestep = Filter_Options.getOption(PF_Options_index::SIMULATION_TIME_STEP);
-	double const Motion_StdDev = Filter_Options.getOption(PF_Options_index::MOTION_STDDEV);
+	double const timestep = getOneOption(PF_Options_index::SIMULATION_TIME_STEP);
+	double const Motion_StdDev = getOneOption(PF_Options_index::MOTION_STDDEV);
 	SimTK::Random::Gaussian motion_noise (0, Motion_StdDev);
 	motion_noise.setSeed(getSeed());
 	

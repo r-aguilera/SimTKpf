@@ -57,10 +57,10 @@ private:
 template<class customInstrument>
 void ParticleFilter::updateWeights(double GroundTruthInstr_reading, std::vector<customInstrument>& InstrVec) {
 
-	double Instrument_StdDev = Filter_Options.getOption(PF_Options_index::SENSOR_STDDEV);
-	double Modified_Instrument_StdDev = Instrument_StdDev * Filter_Options.getOption(PF_Options_index::SENSOR_STDDEV_MOD);
+	double Instrument_StdDev = getOneOption(PF_Options_index::SENSOR_STDDEV);
+	double Modified_Instrument_StdDev = Instrument_StdDev * getOneOption(PF_Options_index::SENSOR_STDDEV_MOD);
 	double belief;
-
+	
 	for (std::size_t i = 0; i < Particles.size(); i++) {
 		InstrVec[i].measure();										// Update instrument reading
 		belief = InstrVec[i].read();								// Make the prediction
