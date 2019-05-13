@@ -4,6 +4,7 @@
 //#include <algorithm>	// Maybe useful in future
 #include "Simbody.h"
 #include "SimTKpf.h"
+#include "Fourbar/assemble_Fourbar.h"
 #include "Fourbar/Gyroscope.h"
 #include "Fourbar/Txt_write.h"
 #include "Fourbar/Grashof_condition.h"
@@ -59,35 +60,17 @@ int main() {
 		
 		// Initialize the system and reference state.
 		system.realizeTopology();
-		SimTK::State RefState = system.getDefaultState(); 
+		SimTK::State RefState;
 
 		// Create and add assembler.
 		SimTK::Assembler assembler(system);
 		assembler.setSystemConstraintsWeight(1);
 		assembler.lockMobilizer(Bar1.getMobilizedBodyIndex());
 
-		// We will random assign the reference state and particle states in the next block
-		{
-			SimTK::Random::Uniform randomAngle(0, 2 * SimTK::Pi);
-			randomAngle.setSeed(getSeed());
-
-			if (OUTPUT_IS_ENABLED) std::cout << FOURBAR_CONFIGURATION.get_description()
-				<< "\n\nAssigning and assembling Reference state...";
-			
-			RefState.updQ()[0] = randomAngle.getValue();
-			assembler.assemble(RefState);
-
-			if (OUTPUT_IS_ENABLED) std::cout << " Done.\nAssigning and assembling Particle states...";
-
-			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++) {	// Particle vector random assigment
-				
-				FILTER.updParticleVec()[i].setStateDefault(system);
-				FILTER.updParticleVec()[i].updState().updQ()[0] = randomAngle.getValue();
-				assembler.assemble(FILTER.updParticleVec()[i].updState());
-			}
-
-			if (OUTPUT_IS_ENABLED) std::cout << " Done.\n" << std::endl;
-		}
+		// We will random assign the reference state and particles states
+		if (OUTPUT_IS_ENABLED) std::cout << FOURBAR_CONFIGURATION.get_description() 
+			<< "\n\nAssigning and assembling Reference state..." << std::endl;
+		assemble_Fourbar(FOURBAR_CONFIGURATION, system, assembler, RefState, FILTER);
 		FILTER.setEqualWeights();
 
 		// Simulate it.

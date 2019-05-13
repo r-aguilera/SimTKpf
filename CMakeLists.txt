@@ -8,6 +8,7 @@ project(SimTKpf)
 
 # List your source and header files here.
 set(my_source_files
+	src/Fourbar/assemble_Fourbar.cpp
 	src/Fourbar/Grashof_condition.cpp
 	src/Fourbar/Gyroscope.cpp
 	src/Fourbar/Txt_write.cpp
@@ -21,6 +22,7 @@ set(my_source_files
 )
 
 set(my_header_files
+	include/Fourbar/assemble_Fourbar.h
 	include/Fourbar/Grashof_condition.h
 	include/Fourbar/Gyroscope.h
 	include/Fourbar/Txt_write.h
