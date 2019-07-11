@@ -67,7 +67,6 @@ int main() {
 		assembler.lockMobilizer(Bar1.getMobilizedBodyIndex());
 
 		// We will random assign the reference state and particles states
-		std::cout << FOURBAR_CONFIGURATION.get_description() << "\n\nAssigning states and assembling fourbar..." << std::endl;
 		assemble_Fourbar(FOURBAR_CONFIGURATION, system, assembler, RefState, FILTER);
 		FILTER.setEqualWeights();
 		
@@ -95,12 +94,6 @@ int main() {
 		Sw_total_time.start();
 
 		for (double time = 0; time <= SIMULATION_TIME; time += SIM_TIME_STEP) {	// Loop to slowly advance simulation
-			
-			Sw_total_time.stop();
-			std::cout << "\n NEXT ITERATION...\n\nCurrent real time: " << time << " s\nCurrent CPU time: "
-				<< Sw_total_time.read()  << " s" << std::endl;
-			Sw_total_time.start();
-			
 			if (TXT_WRITING_IS_ENABLED) {
 				Angle_write(RefState, FILTER.updParticleList());
 				Omega_write(gyr, pargyr);
@@ -117,18 +110,6 @@ int main() {
 			FILTER.updateWeights<Gyroscope>(gyr.read(), pargyr);	// Update particles gyroscope reading and weights
 			FILTER.calculateESS();									// Calculate particles ESS
 
-			printf("\nPARTICLE SUMMARY:\n");
-			for (std::size_t i = 0; i < PARTICLE_NUMBER; i++)
-				printf("\nParticle %3.u \tOmega =%9.5f\tLog(w) = %10.5f\tAngle = %7.3f",
-					static_cast<unsigned int>(i + 1),								static_cast<double>(pargyr[i].read()),
-					static_cast<double>(FILTER.updParticleVec()[i].getWeight()),	static_cast<double>(to2Pi(FILTER.updParticleVec()[i].getState().getQ()[0]))
-				);
-			std::cout << "\n\nReference Gyroscope: " << gyr.read() << std::endl;
-			std::cout << "Reference Angle: " << to2Pi(RefState.getQ()[0]) << std::endl;
-			std::cout << "\nReference State advance time: " << Sw_ref_advance.read() <<  " s" << std::endl;
-			std::cout << "Parrticles States advance time: " << Sw_part_advance.read() << " s" << std::endl;
-			printf("\n ESS = %f %%\n", static_cast<double>(FILTER.getESS() * 100));
-
 			if (FILTER.getESS() < 0.5) {		// Resample when < 50 % of effective particles
 				Sw_resample.start();
 				FILTER.resample();
@@ -137,14 +118,8 @@ int main() {
 					double Rate = Bar1.getRate(FILTER.updParticleVec()[i].updState());
 					Bar1.setRate(FILTER.updParticleVec()[i].updState(), Rate + resample_noise.getValue());
 				}
-				std::cout << "\nResample done! " << "Resample time: " << Sw_resample.read() << std::endl;
-				Sw_resample.restart();
 			}
-			std::cout << "\nPress Enter to keep iterating" << std::endl;
-			getchar();
 		}
-		std::cout << "\nSIMULATION ENDED. Press Enter to close this window." << std::endl;
-		getchar();
 	}
 	catch (const std::exception& e) {
 		std::cout << "Error: " << e.what() << std::endl;
