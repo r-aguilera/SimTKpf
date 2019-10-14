@@ -9,7 +9,12 @@
 #include "Fourbar/Txt_write.h"
 #include "Fourbar/Grashof_condition.h"
 
-int main() {
+int main(int argc, char**argv)
+{
+	//TODO: Procesar argc/argv para ver flags:
+	// "--quiet"
+	bool is_quiet = false;
+
 	double SIMULATION_TIME = 60;
 	double SIM_TIME_STEP = 0.006;
 	double GYROSCOPE_STDDEV = 0.01;
