@@ -4,7 +4,7 @@
 //#include <algorithm>	// Maybe useful in future
 #include <fstream>
 #include <string>
-#include <conio.h>
+//#include <conio.h>
 #include "Simbody.h"
 #include "SimTKpf.h"
 #include "Fourbar/assemble_Fourbar.h"
@@ -139,11 +139,12 @@ int main() {
 
 					for (double time = 0; time <= SIMULATION_TIME; time += SIM_TIME_STEP) {	// Loop to slowly advance simulation
 
+#if 0
 						if (_kbhit()) {
 							char key = toupper(_getch());
 							if (key == 'Q') return 0;
 						}
-
+#endif
 						advance(RefState, ts, SIM_TIME_STEP);					// Advance reference state
 						FILTER.updateStates(ts, assembler);						// Advance particles state
 						gyr.measure();											// Update reference gyroscope reading

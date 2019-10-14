@@ -2,6 +2,7 @@
 #include "Simbody.h"
 #include "SimTKpf/PF_utilities.h"
 #include "SimTKpf/Particle_Classes.h"
+#include "SimTKcommon/internal/Subsystem.h"
 #include "Fourbar/Gyroscope.h"
 #include "Fourbar/Txt_write.h"
 
@@ -13,11 +14,11 @@ void Angle_write(SimTK::State& ref_State, ParticleList& particles) {
 	char AngleValue[9];
 	
 	File.open(filename, std::ios::app);
-	sprintf_s(AngleValue, "%.4f", to2Pi(ref_State.getQ()[0]));
+	sprintf(AngleValue, "%.4f", to2Pi(ref_State.getQ()[0]));
 	File << AngleValue;
 	
 	for (std::size_t i = 0; i < particle_number; ++i) {
-		sprintf_s(AngleValue, "\t%.4f", to2Pi(particles[i].getState().getQ()[0]));
+		sprintf(AngleValue, "\t%.4f", to2Pi(particles[i].getState().getQ()[0]));
 		File << AngleValue;
 	}
 
@@ -34,12 +35,12 @@ void Omega_write(Gyroscope& RefGyr, std::vector<Gyroscope>& PtGyr) {
 
 	File.open(filename, std::ios::app);
 	RefGyr.measure();
-	sprintf_s(OmegaValue, "%.3f", RefGyr.read());
+	sprintf(OmegaValue, "%.3f", RefGyr.read());
 	File << OmegaValue;
 
 	for (std::size_t i = 0; i < particle_number; ++i) {
 		PtGyr[i].measure();
-		sprintf_s(OmegaValue, "\t%.3f", PtGyr[i].read());
+		sprintf(OmegaValue, "\t%.3f", PtGyr[i].read());
 		File << OmegaValue;
 	}
 

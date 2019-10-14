@@ -42,7 +42,12 @@ set(my_header_files
 find_package(Simbody REQUIRED)
 
 # This is only necessary if Simbody was built using CMake older than 3.0.2.
-#include_directories(${Simbody_INCLUDE_DIR})
+include_directories(${Simbody_INCLUDE_DIR})
+
+# Ignore MSVC deprecated warnings:
+if (MSVC)
+  add_definitions(_CRT_SECURE_NO_WARNINGS)
+endif()
 
 add_library(SimTKpf ${my_source_files} ${my_header_files})
 target_link_libraries(SimTKpf PUBLIC ${Simbody_LIBRARIES})
