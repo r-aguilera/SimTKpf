@@ -46,7 +46,7 @@ include_directories(${Simbody_INCLUDE_DIR})
 
 # Ignore MSVC deprecated warnings:
 if (MSVC)
-  add_definitions(_CRT_SECURE_NO_WARNINGS)
+  add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
 add_library(SimTKpf ${my_source_files} ${my_header_files})
