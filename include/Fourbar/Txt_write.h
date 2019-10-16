@@ -6,9 +6,10 @@
 #include "SimTKpf/Particle_Classes.h"
 #include "Fourbar/Gyroscope.h"
 
-// This will write reference and particles both angle into an txt file:
+// Functions to write data to txt files
 
 void Angle_write(SimTK::State&, ParticleList&);
+void Weight_write(ParticleList&);
 void Omega_write(Gyroscope&, std::vector<Gyroscope>&);
 
 #endif

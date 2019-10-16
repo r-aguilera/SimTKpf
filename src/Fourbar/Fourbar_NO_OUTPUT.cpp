@@ -32,7 +32,7 @@ int main() {
 		3,		// Bar3 lenght
 		4 };	// Bar4 lenght
 	GrashofCondition FOURBAR_CONFIGURATION = evaluateGrashof(BAR_LENGHTS);
-	const bool TXT_WRITING_IS_ENABLED = false;
+	const bool TXT_WRITING_IS_ENABLED = true;
 
 	try {
 		// Create the system.
@@ -96,6 +96,7 @@ int main() {
 		for (double time = 0; time <= SIMULATION_TIME; time += SIM_TIME_STEP) {	// Loop to slowly advance simulation
 			if (TXT_WRITING_IS_ENABLED) {
 				Angle_write(RefState, FILTER.updParticleList());
+				Weight_write(FILTER.updParticleList());
 				Omega_write(gyr, pargyr);
 			}
 			Sw_ref_advance.restart();

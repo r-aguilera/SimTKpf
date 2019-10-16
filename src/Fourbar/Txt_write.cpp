@@ -26,6 +26,26 @@ void Angle_write(SimTK::State& ref_State, ParticleList& particles) {
 	File.close();	
 }
 
+void Weight_write(ParticleList& particles) {
+
+	std::size_t particle_number = particles.getAllParticles().size();
+	std::fstream File;
+	SimTK::String filename = "Weights.txt";
+	char WeightValue[9];
+
+	particles.normalizeLinearWeights();
+
+	File.open(filename, std::ios::app);
+
+	for (std::size_t i = 0; i < particle_number; ++i) {
+		sprintf(WeightValue, "\t%.6f", exp(particles[i].getWeight()));
+		File << WeightValue;
+	}
+
+	File << std::endl;
+	File.close();
+}
+
 void Omega_write(Gyroscope& RefGyr, std::vector<Gyroscope>& PtGyr) {
 
 	std::size_t particle_number = PtGyr.size();

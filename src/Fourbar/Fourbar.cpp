@@ -108,6 +108,7 @@ int main(int argc, char**argv)
 			
 			if (TXT_WRITING_IS_ENABLED) {
 				Angle_write(RefState, FILTER.updParticleList());
+				Weight_write(FILTER.updParticleList());
 				Omega_write(gyr, pargyr);
 			}
 			Sw_ref_advance.restart();
