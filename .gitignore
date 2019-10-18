@@ -1,1 +1,4 @@
+# Ignore build folder and MATLAB autosaved files
+
 build*
+*.asv
