@@ -20,23 +20,16 @@ datasize = size(Angle_data);
 iterations = datasize(1);
 statenumber = datasize(2);
 
+maxW = max(max(Weight_data));
+
 hold on
 for i = 1: iterations
     angles = Angle_data(i,:);
     weights = Weight_data(i,2:statenumber);
     
-    maxW = max(weights);
-    minW = min(weights);
-    
-    if maxW == minW
-        for j = 1 : statenumber-1 
-            scatter(i, angles(1+j), '.', 'b')
-        end
-    else
-        for j = 1 : statenumber -1
-            scatter(i, angles(1+j), '.', 'b', 'MarkerEdgeAlpha', (weights(j)-minW)/(maxW-minW))
-        end        
-    end
+   for j = 1 : statenumber -1
+       scatter(i, angles(1+j), '.', 'b', 'MarkerEdgeAlpha', weights(j)/maxW)
+   end  
     
     scatter(i, angles(1), '.','r')
 end
