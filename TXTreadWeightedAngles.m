@@ -22,7 +22,11 @@ statenumber = datasize(2);
 
 maxW = max(max(Weight_data));
 
-hold on
+hold on;
+axes = gca;
+axes.XLim = [0 iterations];
+axes.YLim = [0 2*pi];
+
 for i = 1: iterations
     angles = Angle_data(i,:);
     weights = Weight_data(i,2:statenumber);

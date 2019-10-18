@@ -31,5 +31,11 @@ end
 
 % Plot the values
 hold on;
+axes = gca;
+Ymax = max(data(:));
+Ymin = min(data(:));
+axes.XLim = [0 iterations];
+axes.YLim = [Ymin-0.5 Ymax+0.5];
+
 scatter(Xaxis,Yaxis,'b','.')
 scatter(XaxisRef,YaxisRef,'r','.')
