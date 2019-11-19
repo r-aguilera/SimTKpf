@@ -46,7 +46,7 @@ int main(int argc, char**argv)
 		SimTK::GeneralForceSubsystem forces(system);
 		SimTK::Force::UniformGravity gravity(forces, matter, SimTK::Vec3(0, -9.8, 0));
 
-		SimTK::Body::Rigid Body1, Body2, Body3;
+		SimTK::Body::Rigid Body1, Body2;
 		
 		Body1.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(-BAR_LENGHTS[1] / 2, 0, 0), SimTK::Inertia(1)));
 		SimTK::MobilizedBody::Pin Bar1(matter.Ground(), SimTK::Transform(SimTK::Vec3(-BAR_LENGHTS[0], 0, 0)),
@@ -56,11 +56,7 @@ int main(int argc, char**argv)
 		SimTK::MobilizedBody::Pin Bar2(Bar1, SimTK::Transform(SimTK::Vec3(0)),
 			Body2, SimTK::Transform(-SimTK::Vec3(BAR_LENGHTS[2], 0, 0)));
 
-		Body3.setDefaultRigidBodyMassProperties(SimTK::MassProperties(1.0, SimTK::Vec3(-BAR_LENGHTS[3] / 2, 0, 0), SimTK::Inertia(1)));
-		SimTK::MobilizedBody::Pin Bar3(Bar2, SimTK::Transform(SimTK::Vec3(0)),
-			Body3, SimTK::Transform(-SimTK::Vec3(BAR_LENGHTS[3], 0, 0)));
-		
-		SimTK::Constraint::Ball(matter.Ground(), SimTK::Vec3(0), Bar3, SimTK::Vec3(0));
+		SimTK::Constraint::Rod(matter.Ground(), Bar2, BAR_LENGHTS[3]);
 		
 		// Initialize the system and reference state.
 		system.realizeTopology();
