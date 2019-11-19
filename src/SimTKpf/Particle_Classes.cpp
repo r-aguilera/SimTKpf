@@ -32,13 +32,15 @@ void ParticleDynState::setStateDefault(const SimTK::MultibodySystem& system) {
 
 // ParticleList Implementation
 
-ParticleList::ParticleList() {}
+ParticleList::ParticleList() : ESS(0) {}
 
 ParticleList::ParticleList(std::size_t particle_number) {
 	particles.resize(particle_number);
+	ESS = 0;
 }
 ParticleList::ParticleList(std::vector <ParticleDynState>& ParticleVector) {
 	particles = ParticleVector;
+	ESS = 0;
 }
 
 const ParticleDynState ParticleList::getParticle(std::size_t n) const	{ return particles[n]; }
