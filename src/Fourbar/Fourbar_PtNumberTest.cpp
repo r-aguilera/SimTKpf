@@ -7,10 +7,7 @@
 //#include <conio.h>
 #include "Simbody.h"
 #include "SimTKpf.h"
-#include "Fourbar/assemble_Fourbar.h"
-#include "Fourbar/Gyroscope.h"
-#include "Fourbar/Txt_write.h"
-#include "Fourbar/Grashof_condition.h"
+#include "Fourbar.h"
 
 int main() {
 	const double SIMULATION_TIME = 0.252;		// 42 timesteps

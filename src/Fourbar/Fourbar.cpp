@@ -1,9 +1,6 @@
 #include "Simbody.h"
 #include "SimTKpf.h"
-#include "Fourbar/assemble_Fourbar.h"
-#include "Fourbar/Gyroscope.h"
-#include "Fourbar/Txt_write.h"
-#include "Fourbar/Grashof_condition.h"
+#include "Fourbar.h"
 
 int main(int argc, char *argv[])
 {

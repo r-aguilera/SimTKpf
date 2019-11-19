@@ -22,6 +22,7 @@ set(my_source_files
 )
 
 set(my_header_files
+	include/Fourbar.h
 	include/Fourbar/assemble_Fourbar.h
 	include/Fourbar/Grashof_condition.h
 	include/Fourbar/Gyroscope.h
@@ -55,8 +56,6 @@ target_include_directories(SimTKpf PUBLIC "${CMAKE_SOURCE_DIR}/include")
 
 add_executable(Fourbar src/Fourbar/Fourbar.cpp)
 target_link_libraries(Fourbar SimTKpf)
-add_executable(Fourbar_NO_OUTPUT src/Fourbar/Fourbar_NO_OUTPUT.cpp)
-target_link_libraries(Fourbar_NO_OUTPUT SimTKpf)
 add_executable(Fourbar_StdDevTest src/Fourbar/Fourbar_StdDevTest.cpp)
 target_link_libraries(Fourbar_StdDevTest SimTKpf)
 add_executable(Fourbar_PtNumberTest src/Fourbar/Fourbar_PtNumberTest.cpp)

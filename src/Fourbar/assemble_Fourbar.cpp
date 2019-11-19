@@ -4,9 +4,11 @@
 #include "SimTKpf/Particle_Filter.h"
 #include "SimTKpf/PF_utilities.h"
 
+//TODO: assembly if input bar is not crank
+
 void assemble_Fourbar(GrashofCondition& config, SimTK::MultibodySystem& system, SimTK::Assembler& assembler, SimTK::State& RefState, ParticleFilter& Filter) {
 	double values[2];	// Assembly angle limit values 
-	double limits[2];		// Limits for random angle function
+	double limits[2];	// Limits for random angle function
 	
 	if (config.get_isCrank()) {	// If input bar is crank, assembly range is 0 to 2*Pi
 		limits[0] = 0;
