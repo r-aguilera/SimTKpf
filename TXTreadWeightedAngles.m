@@ -26,6 +26,8 @@ hold on;
 axes = gca;
 axes.XLim = [0 iterations];
 axes.YLim = [0 2*pi];
+xlabel('Iteration')
+ylabel('Angle [rad]')
 
 for i = 1: iterations
     angles = Angle_data(i,:);

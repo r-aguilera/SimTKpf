@@ -34,6 +34,8 @@ hold on;
 axes = gca;
 axes.XLim = [0 iterations];
 axes.YLim = [0 2*pi];
+xlabel('Iteration')
+ylabel('Angle [rad]')
 
 scatter(Xaxis,Yaxis,'b','.')
 scatter(XaxisRef,YaxisRef,'r','.')

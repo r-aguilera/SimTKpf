@@ -36,6 +36,8 @@ Ymax = max(data(:));
 Ymin = min(data(:));
 axes.XLim = [0 iterations];
 axes.YLim = [Ymin-0.5 Ymax+0.5];
+xlabel('Iteration')
+ylabel('Angular velocity [rad/s]')
 
 scatter(Xaxis,Yaxis,'b','.')
 scatter(XaxisRef,YaxisRef,'r','.')

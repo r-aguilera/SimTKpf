@@ -31,6 +31,8 @@ for i = 2 : statenumber
     hold on;
     axes.XLim = [0 iterations];
     axes.YLim = [0 2*pi];
+    xlabel('Iteration')
+    ylabel('Angle [rad]')
     scatter(Xaxis,YaxisPt,'b','.')
     hold off;
     pause(0.01);
